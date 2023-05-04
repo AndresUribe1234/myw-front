@@ -13,14 +13,14 @@
   min-width: 100px;
   text-align: center;
   color: white;
-  background-color: $btn-background-color;
+  background-color: $btn-color;
   border: none;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
-    background-color: $btn-hover-background-color;
+    background-color: $shadeFour;
   }
 
   &:active {

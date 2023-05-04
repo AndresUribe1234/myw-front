@@ -1,0 +1,61 @@
+$searchWidth: 400px;
+$inputWidth: calc(#{$searchWidth}* 0.8);
+$iconWidth: calc(#{$searchWidth}* 0.2);
+
+.searchContainer {
+  position: relative;
+  width: 100%;
+  max-width: $searchWidth;
+
+  .searchInputContainer {
+    display: flex;
+    align-items: center;
+
+    .searchInput {
+      width: $inputWidth;
+      padding: 12px 16px;
+      font-size: 16px;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.2s ease;
+
+      &:focus {
+        border-color: #007bff;
+      }
+    }
+
+    .iconContainer {
+      padding: 0 10px;
+      cursor: pointer;
+      max-width: $iconWidth;
+    }
+  }
+}
+
+.suggestionsList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  width: $inputWidth;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 0 0 4px 4px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1;
+  max-height: 200px;
+  overflow-y: auto;
+
+  .suggestionItem {
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+  }
+}

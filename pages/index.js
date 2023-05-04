@@ -1,6 +1,8 @@
 import MainBtn from "@/components/UI/MainBtn";
+import MpBtn from "@/components/checkout/MpBtb";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();

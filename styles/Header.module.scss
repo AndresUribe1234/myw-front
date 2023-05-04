@@ -1,11 +1,19 @@
+@import "./mixins";
+@import "./vars";
+
 .navigation_bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  display: block;
-  text-align: center;
-  background-color: #708090;
-  color: #d3d3d3;
-  border-bottom: 1px solid lightgray;
+  padding: 5px 20px;
+  background-color: $color-navbar;
+  color: "white";
   position: sticky;
   top: 0;
   z-index: 999;
+
+  .app_logo {
+    font-size: 24px;
+  }
 }

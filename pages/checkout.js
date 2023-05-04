@@ -9,6 +9,11 @@ function CheckoutPage() {
   const [renderMP, setRenderMP] = useState(false);
   const [renderOnce, setRenderOnce] = useState(false);
 
+  useEffect(() => {
+    const script = document.getElementById("mp-script");
+    script.setAttribute("status", "waiting");
+  }, []);
+
   const router = useRouter();
 
   const navigateHandler = () => {
@@ -19,14 +24,11 @@ function CheckoutPage() {
     setRenderMP(true);
   };
 
-  let mpbtn = <div></div>;
   useEffect(() => {
-    console.log("run effect");
-    if (renderMP) {
-      console.log("inside if");
+    if (renderMP && !renderOnce) {
       setRenderOnce(true);
     }
-  }, [renderMP]);
+  }, [renderMP, renderOnce]);
 
   return (
     <>

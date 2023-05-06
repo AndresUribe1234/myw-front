@@ -29,6 +29,7 @@ const Header = () => {
 
   const searchBarValueHandler = (valueSearchBar) => {
     setValueSearch(valueSearchBar);
+    console.log("nav bar prop exectued");
   };
 
   return (

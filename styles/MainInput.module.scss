@@ -1,0 +1,28 @@
+// Input.module.scss
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.label {
+  font-size: 1rem;
+  color: #136f63ff;
+  margin-bottom: 0.3rem;
+}
+
+.input {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #e0ca3cff;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #333333;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+
+  &:focus {
+    border-color: #f34213ff;
+    box-shadow: 0 0 0 2px rgba(#f34213ff, 0.2);
+  }
+}

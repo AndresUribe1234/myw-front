@@ -24,7 +24,7 @@ const SearchComponent = (props) => {
 
   const selectHandler = (item) => {
     console.log(`${item} event was selected!`);
-    setSearchText(item);
+    setSearchText("");
     setShowResults(false);
     props.onGetValue(item);
   };

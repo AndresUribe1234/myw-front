@@ -8,6 +8,7 @@ const NavigationLink = (props) => {
         styles.linkNavigation,
         props.className ? props.className : "",
       ].join(" ")}
+      onClick={props.onClick}
     >
       {props.children}
     </Link>

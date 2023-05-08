@@ -12,6 +12,7 @@ const Login = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [submitingForm, setSubmitingForm] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   const loginAPICall = async function (emailBody, passwordBody) {
     try {
@@ -75,7 +76,9 @@ const Login = () => {
             onFocus={disappearErrHandler}
           />
         </div>
-        {submitingForm && <p className={styles.loggingIn}>Logging in...</p>}
+        {submitingForm && (
+          <p className={styles.loggingIn}>iniciando sesión...</p>
+        )}
         {!submitingForm && error && (
           <p className={styles["err-message"]}>{`Error: ${errorMessage}`}</p>
         )}

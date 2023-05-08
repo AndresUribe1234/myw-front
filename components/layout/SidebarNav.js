@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import NavigationLink from "../UI/NavigationLink";
 import styles from "../../styles/SidebarNav.module.scss";
+import MenuIcon from "@mui/icons-material/Menu";
+import NavigationLink from "../UI/NavigationLink";
 
 const SidebarNav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,13 +35,9 @@ const SidebarNav = () => {
 
   return (
     <div className={styles.sidebarNavContainer}>
-      <button
-        className={styles.menuButton}
-        onClick={toggleSidebar}
-        ref={btnRef}
-      >
-        {isOpen ? "cerrar" : "menu"}
-      </button>
+      <div className={styles.menuButton} onClick={toggleSidebar} ref={btnRef}>
+        <MenuIcon />
+      </div>
 
       <div
         ref={sidebarRef}
@@ -57,6 +54,11 @@ const SidebarNav = () => {
               <NavigationLink href="/events" onClick={handleLinkClick}>
                 eventos
               </NavigationLink>{" "}
+            </li>
+            <li>
+              <NavigationLink href="/events" onClick={handleLinkClick}>
+                organiza tu evento
+              </NavigationLink>
             </li>
             <li>
               <NavigationLink href="/authentication" onClick={handleLinkClick}>

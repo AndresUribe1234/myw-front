@@ -1,19 +1,23 @@
 import { useRef, useState } from "react";
 import styles from "../../../styles/Login.module.scss";
-import { useRouter } from "next/router";
+
 import MainInput from "@/components/UI/MainInput";
 import MainBtn from "@/components/UI/MainBtn";
 
 const SignUp = () => {
-  const router = useRouter();
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmRef = useRef();
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [submitingForm, setSubmitingForm] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
-  const loginAPICall = async function (emailBody, passwordBody, confirmBody) {
+  const createAccountAPICall = async function (
+    emailBody,
+    passwordBody,
+    confirmBody
+  ) {
     try {
       const object = {
         method: "POST",
@@ -26,7 +30,7 @@ const SignUp = () => {
       };
       setSubmitingForm(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_NODE_URL}/api/users/login`,
+        `${process.env.NEXT_PUBLIC_NODE_URL}/api/authentication/account`,
         object
       );
 
@@ -40,6 +44,8 @@ const SignUp = () => {
 
       if (response.status === 200) {
         console.log("Success API call");
+        console.log(data);
+        console.log(setEmailSent(true));
       }
     } catch (err) {
       console.log(err);
@@ -50,9 +56,10 @@ const SignUp = () => {
     event.preventDefault();
     const usernameValue = emailRef.current.value;
     const passwordValue = passwordRef.current.value;
-    const confirmedValue = confirmRef.current.value;
+    const confirmValue = confirmRef.current.value;
 
-    await loginAPICall(usernameValue, passwordValue, confirmedValue);
+    console.log(usernameValue, passwordValue, confirmValue);
+    await createAccountAPICall(usernameValue, passwordValue, confirmValue);
   }
 
   function disappearErrHandler() {
@@ -61,40 +68,67 @@ const SignUp = () => {
 
   return (
     <div className={styles.auth_login_container}>
-      <form onSubmit={formSubmitHandler} className={styles["auth-login-form"]}>
-        <h1>crea tu cuenta</h1>
-        <div>
-          <label>correo</label>
-          <MainInput
-            ref={emailRef}
-            type={"email"}
-            onFocus={disappearErrHandler}
-          />
+      {!emailSent && (
+        <form
+          onSubmit={formSubmitHandler}
+          className={styles["auth-login-form"]}
+        >
+          <h1>crea tu cuenta</h1>
+          <div>
+            <label>correo</label>
+            <MainInput
+              ref={emailRef}
+              type={"email"}
+              onFocus={disappearErrHandler}
+            />
+          </div>
+          <div>
+            <label>contraseña</label>
+            <MainInput
+              ref={passwordRef}
+              type={"password"}
+              minLength="8"
+              onFocus={disappearErrHandler}
+            />
+          </div>
+          <div>
+            <label>confirma tu contraseña</label>
+            <MainInput
+              ref={confirmRef}
+              type={"password"}
+              minLength="8"
+              onFocus={disappearErrHandler}
+            />
+          </div>
+          {submitingForm && (
+            <p className={styles.loggingIn}>creando tu cuenta...</p>
+          )}
+          {!submitingForm && error && (
+            <p className={styles["err-message"]}>{`Error: ${errorMessage}`}</p>
+          )}
+          <MainBtn type="submit">crea tu cuenta</MainBtn>
+        </form>
+      )}
+
+      {emailSent && (
+        <div className={styles.message}>
+          <h1>¡Gracias por registrarte en Max Your Watts!</h1>
+          <p>
+            Por favor, revisa tu correo electrónico y sigue las instrucciones
+            para finalizar el proceso de registro. Si no recibes nuestro correo
+            electrónico en los próximos minutos, asegúrate de revisar tu carpeta
+            de correo no deseado o spam.
+          </p>
+          <p>
+            Si necesitas ayuda o tienes alguna pregunta, no dudes en ponerte en
+            contacto con nuestro equipo de soporte. Estamos aquí para ayudarte
+            en todo lo que necesites.
+          </p>
+          <p>
+            ¡Bienvenido a la comunidad de <span>Max Your Watts!</span>
+          </p>
         </div>
-        <div>
-          <label>contraseña</label>
-          <MainInput
-            ref={passwordRef}
-            type={"password"}
-            minLength="8"
-            onFocus={disappearErrHandler}
-          />
-        </div>
-        <div>
-          <label>confirma tu contraseña</label>
-          <MainInput
-            ref={confirmRef}
-            type={"password"}
-            minLength="8"
-            onFocus={disappearErrHandler}
-          />
-        </div>
-        {submitingForm && <p className={styles.loggingIn}>Logging in...</p>}
-        {!submitingForm && error && (
-          <p className={styles["err-message"]}>{`Error: ${errorMessage}`}</p>
-        )}
-        <MainBtn type="submit">crea tu cuenta</MainBtn>
-      </form>
+      )}
     </div>
   );
 };

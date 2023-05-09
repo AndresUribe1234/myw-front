@@ -66,7 +66,7 @@ const SidebarNav = () => {
               </NavigationLink>{" "}
             </li>
             <li>
-              <NavigationLink href="/events" onClick={handleLinkClick}>
+              <NavigationLink href="/events/personal" onClick={handleLinkClick}>
                 organiza tu evento
               </NavigationLink>
             </li>

@@ -1,10 +1,10 @@
 import MainBtn from "@/components/UI/MainBtn";
-import ForgotPassword from "@/components/auth/update/ForgotPassword";
 import { useRouter } from "next/router";
 import styles from "../../styles/Login.module.scss";
-import { useState, useContext } from "react";
+import { useState, useContext, Fragment } from "react";
 import Spinner from "@/components/UI/Spinner";
 import AuthContext from "@/store/auth-context";
+import NewPassword from "@/components/auth/update/NewPasswod";
 
 const postTokenPage = () => {
   const router = useRouter();
@@ -71,17 +71,22 @@ const postTokenPage = () => {
     }
   };
 
+  let postTokenContent = (
+    <Fragment>
+      <h1>
+        para finalizar tu registro, por favor haz clic en el siguiente botón
+      </h1>
+      <MainBtn onClick={clickHandler}>verificar token</MainBtn>
+    </Fragment>
+  );
+
+  if (from === "forgot-password") {
+    postTokenContent = <NewPassword token={token} email={email} />;
+  }
+
   return (
     <div className={styles.message}>
-      {!submitingForm && !error && (
-        <>
-          <h1>
-            Para finalizar tu registro, por favor haz clic en el siguiente
-            botón!
-          </h1>
-          <MainBtn onClick={clickHandler}>verificar token</MainBtn>
-        </>
-      )}
+      {!submitingForm && !error && postTokenContent}
       {submitingForm && !error && <Spinner />}
       {!submitingForm && error && (
         <p className={styles["err-message"]}>{`Error: ${errorMessage}`}</p>

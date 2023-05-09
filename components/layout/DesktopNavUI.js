@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SearchComponent from "../functionality/SearchComponent";
 import { useRouter } from "next/router";
 import NavigationLink from "../UI/NavigationLink";
+import AuthContext from "@/store/auth-context";
+import MenuComponent from "../functionality/MenuComponent";
 
 const DUMMY_DATA = [
   "Apple",
@@ -16,9 +18,16 @@ const DUMMY_DATA = [
   "Banana 5k",
 ];
 
+const DUMMY_ITEMS = [
+  { label: "perfil", link: "/" },
+  { label: "mi cuenta", link: "/" },
+  { label: "cerrar sessión", link: "" },
+];
+
 const DesktopNavUI = () => {
   const [valueSearch, setValueSearch] = useState("");
   const router = useRouter();
+  const authCtx = useContext(AuthContext);
 
   useEffect(() => {
     if (valueSearch) {
@@ -45,9 +54,15 @@ const DesktopNavUI = () => {
       <div>
         <NavigationLink href={"/events"}>organiza tu evento</NavigationLink>
       </div>
-      <div>
-        <NavigationLink href={"/authentication"}>inicia sessión</NavigationLink>
-      </div>
+      {authCtx.authObject.isLogIn ? (
+        <MenuComponent menuItems={DUMMY_ITEMS} />
+      ) : (
+        <div>
+          <NavigationLink href={"/authentication"}>
+            inicia sessión
+          </NavigationLink>
+        </div>
+      )}
     </React.Fragment>
   );
 };

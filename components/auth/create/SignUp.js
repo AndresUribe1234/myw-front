@@ -43,9 +43,8 @@ const SignUp = () => {
       }
 
       if (response.status === 200) {
-        console.log("Success API call");
         console.log(data);
-        console.log(setEmailSent(true));
+        setEmailSent(true);
       }
     } catch (err) {
       console.log(err);

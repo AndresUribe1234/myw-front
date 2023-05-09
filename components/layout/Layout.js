@@ -16,7 +16,6 @@ const Layout = (props) => {
     }
   }, []);
 
-  console.log("auth context", authCtx);
   return (
     <>
       <Header />

@@ -3,28 +3,37 @@ import styles from "../../../styles/Login.module.scss";
 import { useRouter } from "next/router";
 import MainInput from "@/components/UI/MainInput";
 import MainBtn from "@/components/UI/MainBtn";
-import NavigationLink from "@/components/UI/NavigationLink";
 import AuthContext from "@/store/auth-context";
 
-const Login = () => {
+const NewPassword = (props) => {
   const router = useRouter();
-  const emailRef = useRef();
   const passwordRef = useRef();
+  const confirmRef = useRef();
   const authCtx = useContext(AuthContext);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [submitingForm, setSubmitingForm] = useState(false);
 
-  const loginAPICall = async function (emailBody, passwordBody) {
+  const passwordResetAPICALL = async function (
+    passwordBody,
+    confirmBody,
+    token,
+    email
+  ) {
     try {
       const object = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: emailBody, password: passwordBody }),
+        body: JSON.stringify({
+          email: email,
+          verificationToken: token,
+          newPassword: passwordBody,
+          confirmNewPassword: confirmBody,
+        }),
       };
       setSubmitingForm(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_NODE_URL}/api/authentication/account/login`,
+        `${process.env.NEXT_PUBLIC_NODE_URL}/api/authentication/account/forgot-password/post-token`,
         object
       );
 
@@ -37,18 +46,7 @@ const Login = () => {
       }
 
       if (response.status === 200) {
-        localStorage.setItem(
-          "authObject",
-          JSON.stringify({
-            loggedIn: true,
-            token: data.token,
-            email: data.data.user.email,
-          })
-        );
-        authCtx.logInFnx(true);
-        authCtx.tokenFnx(data.token);
-        authCtx.nameFnx(data.data.user.email);
-        router.push("/?from=createAccount");
+        router.push("/authentication");
         setSubmitingForm(false);
         setError(false);
       }
@@ -59,10 +57,15 @@ const Login = () => {
 
   async function formSubmitHandler(event) {
     event.preventDefault();
-    const usernameEntered = emailRef.current.value;
     const passwordEntered = passwordRef.current.value;
+    const confirmEntered = confirmRef.current.value;
 
-    await loginAPICall(usernameEntered, passwordEntered);
+    await passwordResetAPICALL(
+      passwordEntered,
+      confirmEntered,
+      props.token,
+      props.email
+    );
   }
 
   function disappearErrHandler() {
@@ -72,15 +75,10 @@ const Login = () => {
   return (
     <div className={styles.auth_login_container}>
       <form onSubmit={formSubmitHandler} className={styles["auth-login-form"]}>
-        <h1>inicia sesión</h1>
-        <div>
-          <label>correo</label>
-          <MainInput
-            ref={emailRef}
-            type={"email"}
-            onFocus={disappearErrHandler}
-          />
-        </div>
+        <h1>
+          por favor haz clic en el siguiente botón para finalizar el proceso de
+          restablecimiento de tu contraseña
+        </h1>
         <div>
           <label>contraseña</label>
           <MainInput
@@ -90,22 +88,25 @@ const Login = () => {
             onFocus={disappearErrHandler}
           />
         </div>
+        <div>
+          <label>confirmar contraseña</label>
+          <MainInput
+            ref={confirmRef}
+            type={"password"}
+            minLength="8"
+            onFocus={disappearErrHandler}
+          />
+        </div>
         {submitingForm && (
-          <p className={styles.loggingIn}>iniciando sesión...</p>
+          <p className={styles.loggingIn}>restableciendo contraseña...</p>
         )}
         {!submitingForm && error && (
           <p className={styles["err-message"]}>{`Error: ${errorMessage}`}</p>
         )}
-        <MainBtn type="submit">inicia sesión</MainBtn>
+        <MainBtn type="submit">restablecer contraseña</MainBtn>
       </form>
-      <NavigationLink
-        href={"/authentication/forgotpassword"}
-        className={styles.nav_link}
-      >
-        olvidaste tu contraseña
-      </NavigationLink>
     </div>
   );
 };
 
-export default Login;
+export default NewPassword;

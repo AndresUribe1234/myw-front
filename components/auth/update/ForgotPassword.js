@@ -1,19 +1,17 @@
 import { useRef, useState } from "react";
 import styles from "../../../styles/Login.module.scss";
-import { useRouter } from "next/router";
 import MainInput from "@/components/UI/MainInput";
 import MainBtn from "@/components/UI/MainBtn";
 import NavigationLink from "@/components/UI/NavigationLink";
 
 const ForgotPassword = () => {
-  const router = useRouter();
   const emailRef = useRef();
-
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [submitingForm, setSubmitingForm] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
-  const loginAPICall = async function (emailBody) {
+  const forgotPasswordAPICall = async function (emailBody) {
     try {
       const object = {
         method: "POST",
@@ -22,7 +20,7 @@ const ForgotPassword = () => {
       };
       setSubmitingForm(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_NODE_URL}/api/users/login`,
+        `${process.env.NEXT_PUBLIC_NODE_URL}/api/authentication/account/forgot-password`,
         object
       );
 
@@ -35,7 +33,7 @@ const ForgotPassword = () => {
       }
 
       if (response.status === 200) {
-        console.log("Success API call");
+        setEmailSent(true);
       }
     } catch (err) {
       console.log(err);
@@ -46,7 +44,7 @@ const ForgotPassword = () => {
     event.preventDefault();
     const emailEntered = emailRef.current.value;
 
-    await loginAPICall(emailEntered);
+    await forgotPasswordAPICall(emailEntered);
   }
 
   function disappearErrHandler() {
@@ -55,30 +53,53 @@ const ForgotPassword = () => {
 
   return (
     <div className={styles.auth_login_container}>
-      <form onSubmit={formSubmitHandler} className={styles["auth-login-form"]}>
-        <h1>olvidaste tu contraseña</h1>
-        <p>
-          Para restablecer tu contraseña, ingresa la dirección de correo
-          electrónico asociada con tu cuenta a continuación. Enviaremos un token
-          de verificación a esta dirección de correo electrónico que puedes
-          utilizar para restablecer tu contraseña.
-        </p>
-        <div>
-          <label>correo</label>
-          <MainInput
-            ref={emailRef}
-            type={"email"}
-            onFocus={disappearErrHandler}
-          />
+      {!emailSent && (
+        <form
+          onSubmit={formSubmitHandler}
+          className={styles["auth-login-form"]}
+        >
+          <h1>olvidaste tu contraseña</h1>
+          <p>
+            Para restablecer tu contraseña, ingresa la dirección de correo
+            electrónico asociada con tu cuenta a continuación. Enviaremos un
+            token de verificación a esta dirección de correo electrónico que
+            puedes utilizar para restablecer tu contraseña.
+          </p>
+          <div>
+            <label>correo</label>
+            <MainInput
+              ref={emailRef}
+              type={"email"}
+              onFocus={disappearErrHandler}
+            />
+          </div>
+          {submitingForm && (
+            <p className={styles.loggingIn}>enviando correo...</p>
+          )}
+          {!submitingForm && error && (
+            <p className={styles["err-message"]}>{`Error: ${errorMessage}`}</p>
+          )}
+          <MainBtn type="submit">enviar</MainBtn>
+        </form>
+      )}
+      {emailSent && (
+        <div className={styles.message}>
+          <h1>olvidaste tu contraseña</h1>
+          <p>
+            Por favor revisa tu correo electrónico para continuar con el proceso
+            de actualización de contraseña. Te hemos enviado un correo con
+            instrucciones adicionales. Si no encuentras el correo electrónico en
+            tu bandeja de entrada, por favor revisa tu carpeta de correo no
+            deseado o spam.
+          </p>
+          <p>
+            Si necesitas ayuda adicional o tienes alguna pregunta, no dudes en
+            ponerte en contacto con nuestro equipo de soporte. Estamos aquí para
+            ayudarte en todo lo que necesites.
+          </p>
+          <p>¡Gracias por ser parte de la comunidad de Max Your Watts!</p>
         </div>
-        {submitingForm && (
-          <p className={styles.loggingIn}>enviando correo...</p>
-        )}
-        {!submitingForm && error && (
-          <p className={styles["err-message"]}>{`Error: ${errorMessage}`}</p>
-        )}
-        <MainBtn type="submit">enviar</MainBtn>
-      </form>
+      )}
       <NavigationLink href={"/authentication"} className={styles.nav_link}>
         inicia sesión
       </NavigationLink>

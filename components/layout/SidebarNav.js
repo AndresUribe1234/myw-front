@@ -1,12 +1,14 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import styles from "../../styles/SidebarNav.module.scss";
 import MenuIcon from "@mui/icons-material/Menu";
 import NavigationLink from "../UI/NavigationLink";
+import AuthContext from "@/store/auth-context";
 
 const SidebarNav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef(null);
   const btnRef = useRef();
+  const authCtx = useContext(AuthContext);
 
   const toggleSidebar = () => {
     setIsOpen((prev) => !prev);
@@ -32,6 +34,14 @@ const SidebarNav = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const logOutHandler = () => {
+    authCtx.logInFnx(false);
+    authCtx.tokenFnx("");
+    authCtx.emailFxn("");
+    authCtx.nameFnx("");
+    localStorage.removeItem("authObject");
+  };
 
   return (
     <div className={styles.sidebarNavContainer}>
@@ -60,11 +70,44 @@ const SidebarNav = () => {
                 organiza tu evento
               </NavigationLink>
             </li>
-            <li>
-              <NavigationLink href="/authentication" onClick={handleLinkClick}>
-                inicia sessión
-              </NavigationLink>{" "}
-            </li>
+            {!authCtx.authObject.isLogIn && (
+              <li>
+                <NavigationLink
+                  href="/authentication"
+                  onClick={handleLinkClick}
+                >
+                  inicia sessión
+                </NavigationLink>{" "}
+              </li>
+            )}
+            {authCtx.authObject.isLogIn && (
+              <>
+                <li>
+                  <NavigationLink
+                    href="/authentication"
+                    onClick={handleLinkClick}
+                  >
+                    perfil
+                  </NavigationLink>{" "}
+                </li>
+                <li>
+                  <NavigationLink
+                    href="/authentication"
+                    onClick={handleLinkClick}
+                  >
+                    mi cuenta
+                  </NavigationLink>{" "}
+                </li>
+                <li
+                  onClick={() => {
+                    handleLinkClick();
+                    logOutHandler();
+                  }}
+                >
+                  cerrar sesión
+                </li>
+              </>
+            )}
           </ul>
         </nav>
       </div>

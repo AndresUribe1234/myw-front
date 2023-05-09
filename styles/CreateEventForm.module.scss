@@ -1,0 +1,77 @@
+@import "./mixins";
+@import "./vars";
+
+.event_form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 50px 0;
+
+  h1 {
+    color: $color-title;
+  }
+
+  input {
+    min-width: 300px;
+  }
+
+  div {
+    margin: 0;
+  }
+
+  label {
+    color: $color-title;
+    margin-top: 20px;
+  }
+
+  button {
+    margin-top: 20px;
+  }
+
+  .beautiful_textarea {
+    min-width: 300px;
+    min-height: 100px;
+    padding: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+    border: 1px solid $btn-color;
+    border-radius: 5px;
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) inset;
+
+    &:focus {
+      border-color: $color-navbar;
+      box-shadow: 0 0 10px rgba(0, 150, 136, 0.1);
+    }
+  }
+
+  .custom_selector {
+    min-width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid $btn-color;
+    border-radius: 5px;
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) inset;
+
+    &:focus {
+      border-color: $color-navbar;
+      box-shadow: 0 0 10px rgba(0, 150, 136, 0.1);
+    }
+  }
+
+  .err-message {
+    color: lightcoral;
+  }
+
+  .nav_link {
+    color: $color-title;
+    text-decoration: underline;
+    margin-top: 20px;
+  }
+}

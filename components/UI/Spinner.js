@@ -4,7 +4,7 @@ const Spinner = () => {
   return (
     <div className={classes["loading-container"]}>
       <div className={classes.spinner}></div>
-      <p>Loading data...</p>
+      <p>cargando información...</p>
     </div>
   );
 };

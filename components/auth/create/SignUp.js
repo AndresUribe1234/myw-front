@@ -43,7 +43,6 @@ const SignUp = () => {
       }
 
       if (response.status === 200) {
-        console.log(data);
         setEmailSent(true);
       }
     } catch (err) {
@@ -57,7 +56,6 @@ const SignUp = () => {
     const passwordValue = passwordRef.current.value;
     const confirmValue = confirmRef.current.value;
 
-    console.log(usernameValue, passwordValue, confirmValue);
     await createAccountAPICall(usernameValue, passwordValue, confirmValue);
   }
 

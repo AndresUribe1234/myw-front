@@ -52,7 +52,9 @@ const DesktopNavUI = () => {
         <NavigationLink href={"/events"}>eventos</NavigationLink>
       </div>
       <div>
-        <NavigationLink href={"/events"}>organiza tu evento</NavigationLink>
+        <NavigationLink href={"/events/personal"}>
+          organiza tu evento
+        </NavigationLink>
       </div>
       {authCtx.authObject.isLogIn ? (
         <MenuComponent menuItems={DUMMY_ITEMS} />

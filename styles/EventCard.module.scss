@@ -1,0 +1,62 @@
+@import "./mixins";
+@import "./vars";
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  transition: box-shadow 0.3s ease;
+  text-decoration: none;
+  width: 200px;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+    scale: 1.05;
+  }
+
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    color: $color-title;
+  }
+
+  .description {
+    margin-top: 10px;
+    font-size: 16px;
+    color: $color-title;
+  }
+
+  .type {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #888;
+  }
+
+  .date {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #555;
+  }
+
+  .location {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #555;
+  }
+
+  .fee {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #888;
+  }
+
+  .participants {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #888;
+  }
+}

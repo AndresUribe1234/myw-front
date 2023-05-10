@@ -20,7 +20,7 @@ const EventCard = ({ event }) => {
         )}
         {event.registrationFee && (
           <p className={styles.fee}>
-            {event.registrationFee} {event.currency}
+            {event.registrationFee.toLocaleString("es-ES")} {event.currency}
           </p>
         )}
         <p className={styles.participants}>

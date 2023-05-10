@@ -10,7 +10,9 @@
   padding: 20px;
   transition: box-shadow 0.3s ease;
   text-decoration: none;
-  width: 200px;
+  width: 250px;
+  height: 300px;
+  overflow: auto;
   cursor: pointer;
 
   &:hover {

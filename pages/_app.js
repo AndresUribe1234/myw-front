@@ -1,13 +1,16 @@
 import Layout from "@/components/layout/Layout";
 import AuthContext, { AuthContextProvider } from "@/store/auth-context";
 import "@/styles/globals.css";
+import { EventContextProvider } from "@/store/events-context";
 
 export default function App({ Component, pageProps }) {
   return (
     <AuthContextProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <EventContextProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </EventContextProvider>
     </AuthContextProvider>
   );
 }

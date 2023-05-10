@@ -47,7 +47,7 @@ const Login = () => {
         );
         authCtx.logInFnx(true);
         authCtx.tokenFnx(data.token);
-        authCtx.nameFnx(data.data.user.email);
+        authCtx.emailFxn(data.data.user.email);
         router.push("/?from=createAccount");
         setSubmitingForm(false);
         setError(false);

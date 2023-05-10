@@ -24,6 +24,7 @@ const CreateEventForm = () => {
 
   const createEventAPICall = async function (eventInformation, email) {
     try {
+      console.log(email);
       const object = {
         method: "POST",
         headers: {
@@ -84,8 +85,6 @@ const CreateEventForm = () => {
     };
 
     // Submit the new event data to your API
-
-    console.log(newEvent);
     await createEventAPICall(newEvent, authCtx.authObject.email);
   };
 

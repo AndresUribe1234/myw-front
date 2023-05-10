@@ -1,0 +1,32 @@
+.carousel {
+  display: flex;
+  align-items: center;
+}
+
+.carouselContainer {
+  display: flex;
+  gap: 1rem;
+  overflow: hidden;
+  padding: 20px;
+  //   padding: 1rem;
+}
+
+.carouselItem {
+  flex: 0 0 auto;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 1rem;
+  font-size: 1.5rem;
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.title_container {
+  text-align: center;
+}

@@ -1,7 +1,7 @@
 import MainBtn from "@/components/UI/MainBtn";
 import { useRouter } from "next/router";
 
-const ProfilePage = () => {
+const MyAccountPage = () => {
   const router = useRouter();
 
   const navigateHandler = () => {
@@ -10,10 +10,10 @@ const ProfilePage = () => {
 
   return (
     <div>
-      Profile page
+      My account page
       <MainBtn onClick={navigateHandler}>Back</MainBtn>
     </div>
   );
 };
 
-export default ProfilePage;
+export default MyAccountPage;

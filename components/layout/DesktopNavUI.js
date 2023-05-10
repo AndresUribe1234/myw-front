@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import NavigationLink from "../UI/NavigationLink";
 import AuthContext from "@/store/auth-context";
 import MenuComponent from "../functionality/MenuComponent";
+import EventsContext from "@/store/events-context";
 
 const DUMMY_DATA = [
   "Apple",
@@ -19,8 +20,8 @@ const DUMMY_DATA = [
 ];
 
 const DUMMY_ITEMS = [
-  { label: "perfil", link: "/" },
-  { label: "mi cuenta", link: "/" },
+  { label: "perfil", link: "/profile" },
+  { label: "mi cuenta", link: "/myaccount" },
   { label: "cerrar sessión", link: "" },
 ];
 
@@ -28,6 +29,19 @@ const DesktopNavUI = () => {
   const [valueSearch, setValueSearch] = useState("");
   const router = useRouter();
   const authCtx = useContext(AuthContext);
+  const eventsCtx = useContext(EventsContext);
+  const [fetchingData, setFetchingData] = useState(true);
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    if (!eventsCtx.fetchingData) {
+      setFetchingData(false);
+      const eventsName = eventsCtx.eventsObject.allEvents.map(
+        (ele) => ele.title
+      );
+      setEvents(eventsName);
+    }
+  }, [eventsCtx.fetchingData]);
 
   useEffect(() => {
     if (valueSearch) {
@@ -43,7 +57,7 @@ const DesktopNavUI = () => {
     <React.Fragment>
       <div>
         <SearchComponent
-          data={DUMMY_DATA}
+          data={events}
           placeholder={"busca tu próxima carrera..."}
           onGetValue={searchBarValueHandler}
         />

@@ -12,9 +12,9 @@ const EventsContext = createContext({
 });
 
 export function EventContextProvider(props) {
-  const [allEvents, setAllEvents] = useState("");
-  const [futureEvents, setFutureEvents] = useState("");
-  const [oldEvents, setOldEvents] = useState("");
+  const [allEvents, setAllEvents] = useState([]);
+  const [futureEvents, setFutureEvents] = useState([]);
+  const [oldEvents, setOldEvents] = useState([]);
   const [fetchingData, setFetchingData] = useState(true);
 
   const fetchAllEvents = async function () {

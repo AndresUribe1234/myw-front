@@ -83,18 +83,12 @@ const SidebarNav = () => {
             {authCtx.authObject.isLogIn && (
               <>
                 <li>
-                  <NavigationLink
-                    href="/authentication"
-                    onClick={handleLinkClick}
-                  >
+                  <NavigationLink href="/profile" onClick={handleLinkClick}>
                     perfil
                   </NavigationLink>{" "}
                 </li>
                 <li>
-                  <NavigationLink
-                    href="/authentication"
-                    onClick={handleLinkClick}
-                  >
+                  <NavigationLink href="/myaccount" onClick={handleLinkClick}>
                     mi cuenta
                   </NavigationLink>{" "}
                 </li>

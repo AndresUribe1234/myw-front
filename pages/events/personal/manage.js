@@ -18,7 +18,6 @@ const EventsPersonalManagePage = () => {
         return;
       }
 
-      console.log(authCtx.authObject.token);
       const objectOptions = {
         headers: {
           Authorization: "Bearer " + authCtx.authObject.token,
@@ -30,7 +29,6 @@ const EventsPersonalManagePage = () => {
       );
 
       const data = await response.json();
-      console.log(data);
 
       if (response.status === 200) {
         setFetchingData(false);
@@ -51,13 +49,12 @@ const EventsPersonalManagePage = () => {
     fetchAllCreatedEvents();
   }, [authCtx.authObject.token]);
 
-  console.log(eventsArray);
   return (
     <div className={styles.page_event_container}>
       {!fetchingData &&
         !error &&
         eventsArray &&
-        eventsArray.map((ele, index) => <EventCard event={ele} />)}
+        eventsArray.map((ele, index) => <EventCard event={ele} key={index} />)}
       {fetchingData && <Spinner />}
       {error && <ErrorMessage error={errorMessage} />}
     </div>

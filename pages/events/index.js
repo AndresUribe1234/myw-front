@@ -21,11 +21,9 @@ const EventsPage = () => {
   }, [eventsCtx.fetchingData]);
 
   const clickHandler = (route) => {
-    console.log(route);
     router.push(route);
   };
 
-  console.log(eventsCtx);
   return (
     <div>
       {fetchingData && <Spinner />}

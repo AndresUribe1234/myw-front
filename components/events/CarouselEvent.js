@@ -7,17 +7,20 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const CarouselEvent = ({ items, itemsPerPage, title }) => {
   const [currentPage, setCurrentPage] = useState(0);
+  const [direction, setDirection] = useState(0); // New state to keep track of the direction
 
   const goNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
+    setDirection(-1); // Set direction to -1 when going to the next page
   };
 
   const goPrevPage = () => {
     setCurrentPage((prevPage) => prevPage - 1);
+    setDirection(1); // Set direction to 1 when going to the previous page
   };
 
   const variants = {
-    hidden: { opacity: 0, x: -200 },
+    hidden: { opacity: 0, x: direction * 200 }, // Use the direction state to adjust the x value
     show: { opacity: 1, x: 0 },
   };
 

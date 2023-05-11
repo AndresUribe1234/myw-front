@@ -26,7 +26,7 @@ const DUMMY_ITEMS = [
 ];
 
 const DesktopNavUI = () => {
-  const [valueSearch, setValueSearch] = useState("");
+  const [valueSearch, setValueSearch] = useState({});
   const router = useRouter();
   const authCtx = useContext(AuthContext);
   const eventsCtx = useContext(EventsContext);
@@ -36,21 +36,22 @@ const DesktopNavUI = () => {
   useEffect(() => {
     if (!eventsCtx.fetchingData) {
       setFetchingData(false);
-      const eventsName = eventsCtx.eventsObject.allEvents.map(
-        (ele) => ele.title
-      );
+      const eventsName = eventsCtx.eventsObject.allEvents.map((ele) => {
+        return { title: ele.title, id: ele._id };
+      });
+
       setEvents(eventsName);
     }
-  }, [eventsCtx.fetchingData]);
+  }, [eventsCtx.eventsObject.allEvents]);
 
   useEffect(() => {
     if (valueSearch) {
-      router.push(`/events/${valueSearch}`);
+      router.push(`/events/${valueSearch.value}?id=${valueSearch.id}`);
     }
   }, [valueSearch]);
 
-  const searchBarValueHandler = (valueSearchBar) => {
-    setValueSearch(valueSearchBar);
+  const searchBarValueHandler = (valueSearchBar, id) => {
+    setValueSearch({ value: valueSearchBar, id: id });
   };
 
   return (

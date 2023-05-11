@@ -6,7 +6,10 @@ require("moment/locale/es");
 
 const EventCard = ({ event }) => {
   return (
-    <Link href={`/events/${event._id}`} className={styles.card}>
+    <Link
+      href={`/events/${event.title}?id=${event._id}`}
+      className={styles.card}
+    >
       <div>
         <h2 className={styles.title}>{event.title}</h2>
         <p className={styles.description}>{event.description}</p>

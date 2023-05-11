@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/SearchComponent.module.scss";
 import SearchIcon from "@mui/icons-material/Search";
-import { INTERNALS } from "next/dist/server/web/spec-extension/request";
 
 const SearchComponent = (props) => {
-  const data = props.data;
   const [searchText, setSearchText] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const eventsNameArray = props.data.map((ele) => ele.title);
+    setData(eventsNameArray);
+  }, [props]);
 
   useEffect(() => {
     if (searchText) {
@@ -22,11 +26,11 @@ const SearchComponent = (props) => {
     setSearchText(e.target.value);
   };
 
-  const selectHandler = (item) => {
-    console.log(`${item} event was selected!`);
+  const selectHandler = (item, id) => {
+    console.log(`${item} event with ${id} was selected!`);
     setSearchText("");
     setShowResults(false);
-    props.onGetValue(item);
+    props.onGetValue(item, id);
   };
 
   const focusInputHandler = () => {
@@ -50,15 +54,22 @@ const SearchComponent = (props) => {
       </div>
       {suggestions.length > 0 && showResults && (
         <ul className={styles.suggestionsList}>
-          {suggestions.map((suggestion, index) => (
-            <li
-              key={index}
-              className={styles.suggestionItem}
-              onClick={selectHandler.bind(this, suggestion)}
-            >
-              {suggestion}
-            </li>
-          ))}
+          {suggestions.map((suggestion, index) => {
+            const element = props.data.filter(
+              (ele) => ele.title === suggestion
+            );
+
+            const id = element[0].id;
+            return (
+              <li
+                key={index}
+                className={styles.suggestionItem}
+                onClick={selectHandler.bind(this, suggestion, id)}
+              >
+                {suggestion}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

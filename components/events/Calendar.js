@@ -7,6 +7,7 @@ import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArro
 import classes from "./../../styles/Calendar.module.scss";
 require("moment/locale/es");
 import tz from "moment-timezone";
+import ModalEventsCalendar from "./ModalEventsCalendar";
 
 const eventsArray = {
   Carrera: "#136f63ff",
@@ -22,6 +23,9 @@ function Calendar(props) {
   const [data, setData] = useState([]);
   const [dataDateValue, setDataDateValue] = useState([]);
   const [eventsTypeDay, setEventsTypeDay] = useState([]);
+  const [modalView, setModalView] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalData, setModalData] = useState([]);
 
   useEffect(() => {
     // Set data from props
@@ -105,8 +109,11 @@ function Calendar(props) {
     );
   };
 
-  const interactCalendarHandler = () => {
+  const interactCalendarHandler = (title, data) => {
     console.log("you clicked me and theres an events here!");
+    setModalTitle(title);
+    setModalData(data);
+    setModalView(true);
   };
 
   const tableDateFunctionalityHTML = (
@@ -179,6 +186,10 @@ function Calendar(props) {
                 );
 
                 const types = eventsTypeDay[dateForSearch];
+                const title = moment
+                  .utc(ele.dateValueSecondsFromUTC[index])
+                  .locale("es")
+                  .format("MMMM  DD, YYYY");
 
                 rowsBody.push(
                   <div
@@ -186,7 +197,7 @@ function Calendar(props) {
                     data-week={index + 1}
                     data-day={day}
                     className={classes.row_cell}
-                    onClick={interactCalendarHandler}
+                    onClick={interactCalendarHandler.bind(this, title, data)}
                   >
                     <p>{day}</p>
                     <div className={classes.leyend_container}>
@@ -229,6 +240,14 @@ function Calendar(props) {
           })}
         </div>
       </div>
+      <ModalEventsCalendar
+        view={modalView}
+        onViewModal={() => {
+          setModalView(false);
+        }}
+        title={modalTitle}
+        data={modalData}
+      />
     </div>
   );
 }

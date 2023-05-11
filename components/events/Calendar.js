@@ -6,10 +6,52 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import classes from "./../../styles/Calendar.module.scss";
 require("moment/locale/es");
+import tz from "moment-timezone";
+
+const eventsArray = {
+  Carrera: "#136f63ff",
+  Senderismo: "#e0ca3cff",
+  Ciclismo: "#f34213ff",
+  Natación: "#3e2f5bff",
+  Otro: "#b8a276ff",
+};
 
 function Calendar(props) {
   const [currentDate, setCurrentDate] = useState(moment());
   const [calendar, setCalendar] = useState([]);
+  const [data, setData] = useState([]);
+  const [dataDateValue, setDataDateValue] = useState([]);
+  const [eventsTypeDay, setEventsTypeDay] = useState([]);
+
+  useEffect(() => {
+    // Set data from props
+    setData(props.data);
+    // Get array of dates from data for when rendering a date knowing if theres an event
+    const timeSinceUTC = props.data.map((ele) => {
+      const dateFromDataArray = ele.eventDate;
+      const momentDate = moment.utc(dateFromDataArray).format("YYYY-MM-DD");
+      return new Date(momentDate).getTime();
+    });
+    setDataDateValue(timeSinceUTC);
+
+    // Get type of events that happen in  certain date
+    const eventsType = props.data.reduce((acc, event) => {
+      const dateMoment = moment.utc(event.eventDate).format("YYYY-MM-DD");
+
+      const dateMomentString = String(dateMoment);
+      if (!acc[dateMomentString]) {
+        acc[dateMomentString] = [];
+      }
+
+      if (!acc[dateMomentString].includes(event.eventType)) {
+        acc[dateMomentString].push(event.eventType);
+      }
+
+      return acc;
+    }, {});
+
+    setEventsTypeDay(eventsType);
+  }, [props.data]);
 
   useEffect(() => {
     const calculateCalendar = () => {
@@ -61,6 +103,10 @@ function Calendar(props) {
         ? moment(prevDate).add(1, unit)
         : moment(prevDate).subtract(1, unit)
     );
+  };
+
+  const interactCalendarHandler = () => {
+    console.log("you clicked me and theres an events here!");
   };
 
   const tableDateFunctionalityHTML = (
@@ -118,18 +164,57 @@ function Calendar(props) {
             //Declare empty body of tr tag
             const rowsBody = [];
             //Loop through all data of correspodning week. "In" returns index in for loop. "Of" returns value in for loop.
-            for (let day of ele.valueHtmlCalendar) {
+            for (let index in ele.valueHtmlCalendar) {
+              const day = ele.valueHtmlCalendar[index];
               //   Add html value for each day in order to construct array od <td/> tags that will build <tr/> tag
-              rowsBody.push(
-                <div
-                  key={day}
-                  data-week={index + 1}
-                  data-day={day}
-                  className={classes.row_cell}
-                >
-                  <div>{day}</div>
-                </div>
-              );
+
+              //  Html passed if date appear in data
+
+              if (dataDateValue.includes(ele.dateValueSecondsFromUTC[index])) {
+                // Get date as a string to be able to search for key in object
+                const dateForSearch = String(
+                  moment
+                    .utc(ele.dateValueSecondsFromUTC[index])
+                    .format("YYYY-MM-DD")
+                );
+
+                const types = eventsTypeDay[dateForSearch];
+
+                rowsBody.push(
+                  <div
+                    key={day}
+                    data-week={index + 1}
+                    data-day={day}
+                    className={classes.row_cell}
+                    onClick={interactCalendarHandler}
+                  >
+                    <p>{day}</p>
+                    <div className={classes.leyend_container}>
+                      {types.map((ele, index) => (
+                        <div
+                          key={index}
+                          className={classes.leyend}
+                          style={{ backgroundColor: eventsArray[ele] }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
+              // Html if theres nof information for this date
+              if (!dataDateValue.includes(ele.dateValueSecondsFromUTC[index])) {
+                rowsBody.push(
+                  <div
+                    key={day}
+                    data-week={index + 1}
+                    data-day={day}
+                    className={classes.row_cell}
+                  >
+                    <div>{day}</div>
+                  </div>
+                );
+              }
             }
             // Return one table row for each week of the calendar array
             return (

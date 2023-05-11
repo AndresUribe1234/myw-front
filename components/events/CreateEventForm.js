@@ -118,11 +118,11 @@ const CreateEventForm = () => {
         required
         className={styles.custom_selector}
       >
-        <option value="Running">Carrera</option>
-        <option value="Hiking">Senderismo</option>
-        <option value="Cycling">Ciclismo</option>
-        <option value="Swimming">Natación</option>
-        <option value="Other">Otro</option>
+        <option value="Carrera">Carrera</option>
+        <option value="Senderismo">Senderismo</option>
+        <option value="Ciclismo">Ciclismo</option>
+        <option value="Natación">Natación</option>
+        <option value="Otro">Otro</option>
       </select>
 
       <label htmlFor="eventDate">fecha del evento</label>

@@ -7,6 +7,7 @@ import CarouselEvent from "@/components/events/CarouselEvent";
 import MainBtn from "@/components/UI/MainBtn";
 import { useRouter } from "next/router";
 import Calendar from "@/components/events/Calendar";
+import LeyendEvents from "@/components/events/LeyendEvents";
 
 const EventsPage = () => {
   const [fetchingData, setFetchingData] = useState(true);
@@ -50,7 +51,8 @@ const EventsPage = () => {
             Mostrar todos los eventos anteriores
           </MainBtn>
           <h1>Calendario de Eventos</h1>
-          <Calendar />
+          <Calendar data={eventsCtx.eventsObject.allEvents} />
+          <LeyendEvents />
         </div>
       )}
     </div>

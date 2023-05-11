@@ -1,0 +1,19 @@
+.leyend_container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  background: #f4f4f4;
+  width: 100%;
+  padding: 20px 0;
+
+  .label_container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .dot_container {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+  }
+}

@@ -1,3 +1,6 @@
+@import "./mixins";
+@import "./vars";
+
 .modal_content_container {
   position: absolute;
   top: 50%;
@@ -14,4 +17,34 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  .all_events_container {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .event_container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px;
+      border-radius: 5px;
+      text-align: center;
+      background-color: #f4f4f4;
+      cursor: pointer;
+
+      .title_lable {
+        width: 150px;
+      }
+
+      .type_lable {
+        width: 80px;
+      }
+
+      .time_lable {
+        width: 80px;
+      }
+    }
+  }
 }

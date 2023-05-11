@@ -9,12 +9,14 @@ const EventsContext = createContext({
   allEventsFnx: function () {},
   futureEventsFnx: function () {},
   oldEventsFxn: function () {},
+  eventsGroupedByDate: function () {},
 });
 
 export function EventContextProvider(props) {
   const [allEvents, setAllEvents] = useState([]);
   const [futureEvents, setFutureEvents] = useState([]);
   const [oldEvents, setOldEvents] = useState([]);
+  const [groupedEvents, setGroupedEvents] = useState([]);
   const [fetchingData, setFetchingData] = useState(true);
 
   const fetchAllEvents = async function () {
@@ -41,8 +43,31 @@ export function EventContextProvider(props) {
     }
   };
 
+  const fetchAllGroupedEvents = async function () {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_NODE_URL}/api/events/all/grouped`
+      );
+
+      const data = await response.json();
+
+      if (response.status === 200) {
+        setGroupedEvents(data.data.eventsGroupedByDate);
+        setFetchingData(false);
+      }
+
+      if (response.status !== 200) {
+        setFetchingData(false);
+        console.log("Error in events context fetch");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchAllEvents();
+    fetchAllGroupedEvents();
   }, []);
 
   function allEventsHandler(events) {
@@ -55,11 +80,22 @@ export function EventContextProvider(props) {
     setOldEvents([...events]);
   }
 
+  function groupedEventsHandler(events) {
+    setGroupedEvents([...events]);
+  }
+
   const context = {
-    eventsObject: { allEvents, futureEvents, oldEvents, fetchingData },
+    eventsObject: {
+      allEvents,
+      futureEvents,
+      oldEvents,
+      groupedEvents,
+      fetchingData,
+    },
     allEventsFnx: allEventsHandler,
     futureEventsFnx: futureEventsHandler,
     oldEventsFxn: oldEventsHandler,
+    groupedEventsFxn: groupedEventsHandler,
   };
 
   return (

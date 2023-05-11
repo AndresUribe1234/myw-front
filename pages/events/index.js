@@ -51,7 +51,10 @@ const EventsPage = () => {
             Mostrar todos los eventos anteriores
           </MainBtn>
           <h1>Calendario de Eventos</h1>
-          <Calendar data={eventsCtx.eventsObject.allEvents} />
+          <Calendar
+            data={eventsCtx.eventsObject.allEvents}
+            groupedData={eventsCtx.eventsObject.groupedEvents}
+          />
           <LeyendEvents />
         </div>
       )}

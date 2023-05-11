@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/SearchComponent.module.scss";
 import SearchIcon from "@mui/icons-material/Search";
+import { useRouter } from "next/router";
 
 const SearchComponent = (props) => {
   const [searchText, setSearchText] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [data, setData] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     const eventsNameArray = props.data.map((ele) => ele.title);
@@ -30,7 +32,7 @@ const SearchComponent = (props) => {
     console.log(`${item} event with ${id} was selected!`);
     setSearchText("");
     setShowResults(false);
-    props.onGetValue(item, id);
+    router.push(`/events/${item}?id=${id}`);
   };
 
   const focusInputHandler = () => {

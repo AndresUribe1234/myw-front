@@ -98,10 +98,10 @@ function Calendar(props) {
   }, [currentDate]);
 
   const calendarHandler = (typeOfOperation, unit) => {
-    setCurrentDate((prevDate) =>
+    setCurrentDate(
       typeOfOperation === "add"
-        ? moment(prevDate).add(1, unit)
-        : moment(prevDate).subtract(1, unit)
+        ? moment(currentDate).add(1, unit)
+        : moment(currentDate).subtract(1, unit)
     );
   };
 
@@ -182,7 +182,7 @@ function Calendar(props) {
 
                 rowsBody.push(
                   <div
-                    key={day}
+                    key={Math.random()}
                     data-week={index + 1}
                     data-day={day}
                     className={classes.row_cell}
@@ -192,7 +192,7 @@ function Calendar(props) {
                     <div className={classes.leyend_container}>
                       {types.map((ele, index) => (
                         <div
-                          key={index}
+                          key={Math.random()}
                           className={classes.leyend}
                           style={{ backgroundColor: eventsArray[ele] }}
                         />
@@ -206,7 +206,7 @@ function Calendar(props) {
               if (!dataDateValue.includes(ele.dateValueSecondsFromUTC[index])) {
                 rowsBody.push(
                   <div
-                    key={day}
+                    key={Math.random()}
                     data-week={index + 1}
                     data-day={day}
                     className={classes.row_cell}
@@ -219,8 +219,8 @@ function Calendar(props) {
             // Return one table row for each week of the calendar array
             return (
               <div
-                data-week={index + 1}
-                key={index}
+                data-week={index}
+                key={Math.random()}
                 className={classes.row_container}
               >
                 {rowsBody}

@@ -45,7 +45,9 @@ function ModalEventsCalendar(props) {
               <div
                 className={styles.event_container}
                 onClick={() => {
-                  router.push(`/events/${event.eventTitle}?id=${event._id}`);
+                  router.push(
+                    `/events/${event.eventTitle}?id=${event.eventId}`
+                  );
                 }}
                 key={index}
               >

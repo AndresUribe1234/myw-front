@@ -51,7 +51,7 @@ const SearchComponent = (props) => {
           onFocus={focusInputHandler}
         />
         <div className={styles.iconContainer}>
-          <SearchIcon sx={{ color: "white" }} />
+          <SearchIcon sx={{ color: props.color || "white" }} />
         </div>
       </div>
       {suggestions.length > 0 && showResults && (

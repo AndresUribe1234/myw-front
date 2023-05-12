@@ -93,8 +93,6 @@ function Calendar(props) {
     setCalendar(calculateCalendar());
   }, [currentDate]);
 
-  console.log(calendar);
-
   const calendarHandler = (typeOfOperation, unit) => {
     setCurrentDate(
       typeOfOperation === "add"
@@ -104,7 +102,6 @@ function Calendar(props) {
   };
 
   const interactCalendarHandler = (data) => {
-    console.log("you clicked me and theres an events here!");
     setModalData(data);
     setModalView(true);
   };

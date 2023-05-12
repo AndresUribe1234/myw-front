@@ -23,7 +23,7 @@ function ModalEventsCalendar(props) {
   }, [props.view]);
 
   const data = props.data[0];
-  console.log(data);
+
   const title = moment.utc(data?._id).local("es").format("MMMM DD, yyyy");
   return (
     <div>
@@ -41,12 +41,13 @@ function ModalEventsCalendar(props) {
               <div className={styles.type_lable}>tipo</div>
               <div className={styles.time_lable}>hora</div>
             </div>
-            {data?.events.map((event) => (
+            {data?.events.map((event, index) => (
               <div
                 className={styles.event_container}
                 onClick={() => {
                   router.push(`/events/${event.eventTitle}?id=${event._id}`);
                 }}
+                key={index}
               >
                 <div className={styles.title_lable}>{event.eventTitle}</div>
                 <div className={styles.type_lable}>{event.eventType}</div>

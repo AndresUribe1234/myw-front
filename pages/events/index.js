@@ -8,6 +8,7 @@ import MainBtn from "@/components/UI/MainBtn";
 import { useRouter } from "next/router";
 import Calendar from "@/components/events/Calendar";
 import LeyendEvents from "@/components/events/LeyendEvents";
+import CalendarSection from "@/components/home/CalendarSection";
 
 const EventsPage = () => {
   const [fetchingData, setFetchingData] = useState(true);
@@ -50,12 +51,7 @@ const EventsPage = () => {
           <MainBtn onClick={clickHandler.bind(this, "/events/all?events=old")}>
             Mostrar todos los eventos anteriores
           </MainBtn>
-          <h1>Calendario de Eventos</h1>
-          <Calendar
-            data={eventsCtx.eventsObject.allEvents}
-            groupedData={eventsCtx.eventsObject.groupedEvents}
-          />
-          <LeyendEvents />
+          <CalendarSection />
         </div>
       )}
     </div>

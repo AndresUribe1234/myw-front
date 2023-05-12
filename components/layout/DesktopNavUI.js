@@ -33,7 +33,7 @@ const DesktopNavUI = () => {
       <div>
         <SearchComponent
           data={events}
-          placeholder={"busca tu próxima carrera..."}
+          placeholder={"busca tu próxima momento..."}
         />
       </div>
       <div>

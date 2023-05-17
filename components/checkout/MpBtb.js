@@ -1,6 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
+import AuthContext from "@/store/auth-context";
 
-function MpBtn() {
+function MpBtn({ formData }) {
+  const authCtx = useContext(AuthContext);
+
   async function fetchCheckout() {
     const script = document.getElementById("mp-script");
     const status = script.getAttribute("status");
@@ -9,15 +12,25 @@ function MpBtn() {
     }
     script.setAttribute("status", "running");
 
+    const object = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + authCtx.authObject.token,
+      },
+      body: JSON.stringify({
+        ...formData,
+      }),
+    };
+
+    console.log("inside mp component");
+    console.log(formData);
+
     const res = await fetch(
-      process.env.NEXT_PUBLIC_NODE_URL + "/api/checkout",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      `${process.env.NEXT_PUBLIC_NODE_URL}/api/checkout/`,
+      object
     );
+
     const data = await res.json();
 
     if (data.global) {

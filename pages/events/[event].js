@@ -11,10 +11,6 @@ const EventDetail = () => {
   const event = router.query.event;
   const id = router.query.id;
 
-  const clickHandler = () => {
-    router.push(`/checkout?event=${event}`);
-  };
-
   const [eventData, setEventData] = useState(null);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -52,6 +48,12 @@ const EventDetail = () => {
 
   if (!eventData) return <Spinner />;
   if (error) return <ErrorMessage error={errorMsg} />;
+
+  const clickHandler = () => {
+    router.push(
+      `/checkout?event=${event}&title=${eventData.title}&price=${eventData.registrationFee}`
+    );
+  };
 
   return (
     <div className={styles.detail_container}>

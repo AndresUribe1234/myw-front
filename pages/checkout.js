@@ -1,13 +1,15 @@
 import MainBtn from "@/components/UI/MainBtn";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import MpBtn from "@/components/checkout/MpBtb";
-import Head from "next/head";
+import styles from "../styles/PageContainer.module.scss";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import NavigationLink from "@/components/UI/NavigationLink";
 
 function CheckoutPage() {
   const [renderMP, setRenderMP] = useState(false);
   const [renderOnce, setRenderOnce] = useState(false);
+  const [MPData, setMPData] = useState({});
 
   useEffect(() => {
     const script = document.getElementById("mp-script");
@@ -20,7 +22,9 @@ function CheckoutPage() {
     router.back();
   };
 
-  const onRenderMP = () => {
+  const onRenderMP = (formData) => {
+    console.log("running this on checkoutpage!");
+    setMPData({ ...formData });
     setRenderMP(true);
   };
 
@@ -31,17 +35,19 @@ function CheckoutPage() {
   }, [renderMP, renderOnce]);
 
   return (
-    <>
-      <Head>
-        <title>MYW app</title>
-        <meta name="description" content="MYW app" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-      <div>Checkout Page</div>
+    <div className={styles.page_container_no_m}>
       <CheckoutForm onRender={onRenderMP} />
-      <MainBtn onClick={navigateHandler}>Back</MainBtn>
-      {renderOnce && <MpBtn />}
-    </>
+      {renderOnce && <MpBtn formData={MPData} />}
+      <div className={styles.btn_container}>
+        <button
+          onClick={() => {
+            router.back();
+          }}
+        >
+          atras
+        </button>
+      </div>
+    </div>
   );
 }
 

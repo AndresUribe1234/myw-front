@@ -6,7 +6,8 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin: 50px 0;
+  margin-top: 50px;
+  margin-bottom: 20px;
 
   h1 {
     color: $color-title;
@@ -14,6 +15,7 @@
 
   input {
     min-width: 300px;
+    text-align: center;
   }
 
   div {
@@ -27,6 +29,36 @@
 
   button {
     margin-top: 20px;
+  }
+
+  select {
+    span {
+      min-width: 50px;
+    }
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #ddd;
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #bbb;
+    }
+  }
+
+  .predifined_information {
+    margin-top: 20px;
+    background: #bbb;
+    border-radius: 20px;
+    padding: 10px;
+    opacity: 0.5;
   }
 
   .beautiful_textarea {

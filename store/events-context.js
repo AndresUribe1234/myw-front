@@ -29,8 +29,8 @@ export function EventContextProvider(props) {
 
       if (response.status === 200) {
         setAllEvents(data.data.events);
-        setFutureEvents(data.data.events);
-        setOldEvents(data.data.events);
+        setFutureEvents(data.data.futureEvents);
+        setOldEvents(data.data.pastEvents);
         setFetchingData(false);
       }
 

@@ -34,7 +34,7 @@ const EventsPage = () => {
       {!fetchingData && (
         <div className={styles.page_container_column}>
           <CarouselEvent
-            items={eventsCtx.eventsObject.allEvents}
+            items={eventsCtx.eventsObject.futureEvents}
             itemsPerPage={4}
             title={"Próximos Eventos"}
           />
@@ -44,7 +44,7 @@ const EventsPage = () => {
             Mostrar todos los proximos eventos
           </MainBtn>
           <CarouselEvent
-            items={eventsCtx.eventsObject.allEvents}
+            items={eventsCtx.eventsObject.oldEvents}
             itemsPerPage={4}
             title={"Eventos Anteriores"}
           />

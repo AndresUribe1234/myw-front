@@ -6,6 +6,11 @@ require("moment/locale/es");
 import tz from "moment-timezone";
 
 const EventCard = ({ event }) => {
+  const valueFeeToRender =
+    event.registrationFee === 0 || event.registrationFee === undefined
+      ? `Gratuita`
+      : `${event.registrationFee?.toLocaleString("es-ES")} ${event.currency}`;
+
   return (
     <Link
       href={`/events/${event.title}?id=${event._id}`}
@@ -14,7 +19,9 @@ const EventCard = ({ event }) => {
       <div>
         <h2 className={styles.title}>{event.title}</h2>
         <p className={styles.description}>{event.description}</p>
-        <p className={styles.type}>{event.eventType}</p>
+        <p
+          className={styles.type}
+        >{`${event.eventType} - ${event.modalityType}`}</p>
         <p className={styles.date}>
           {moment
             .utc(event.eventDate)
@@ -34,11 +41,7 @@ const EventCard = ({ event }) => {
             {event.location.coordinates.join(", ")}
           </p>
         )}
-        {event.registrationFee && (
-          <p className={styles.fee}>
-            {event.registrationFee.toLocaleString("es-ES")} {event.currency}
-          </p>
-        )}
+        <p className={styles.fee}>{valueFeeToRender}</p>
         <p className={styles.participants}>
           {event.registeredParticipants.length}/{event.maxParticipants}{" "}
           participantes

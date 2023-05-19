@@ -13,20 +13,23 @@ const EventDisplay = (props) => {
 
   return (
     <div className={styles.eventDisplay}>
-      <p>descripcón</p>
+      <p>Descripcón</p>
       <p className={styles.data_field}>{eventData.description}</p>
       <div className={styles.details}>
         <div>
           <p>Organizador</p>
-          <p className={styles.data_field}> {eventData.organizer}</p>
+          <p className={styles.data_field}> {eventData.nameOrganizer}</p>
+        </div>
+        <div>
+          <p>Modalidad</p>
+          <p className={styles.data_field}> {eventData.modalityType}</p>
         </div>
         <div>
           <p>Tipo</p>
           <p className={styles.data_field}> {eventData.eventType}</p>
         </div>
       </div>
-      <p>fecha y hora</p>
-
+      <p>Fecha y hora</p>
       <p className={styles.data_field}>
         {moment
           .utc(eventData.eventDate)
@@ -34,22 +37,28 @@ const EventDisplay = (props) => {
           .local("es")
           .format("MMMM DD, yyyy h:mm a")}
       </p>
-      <p>inscripción</p>
-      <p className={styles.data_field}>
-        {eventData.registrationFee
-          ? `${eventData.registrationFee.toLocaleString("es-ES")} ${
-              eventData.currency
-            }`
-          : "gratuita"}
-      </p>
-      <p>participantes</p>
+      <div className={styles.details}>
+        <div>
+          <p>Inscripción</p>
+          <p className={styles.data_field}> {eventData.suscriptionType}</p>
+        </div>
+        <div>
+          <p>Valor</p>
+          <p
+            className={styles.data_field}
+          >{`${eventData.registrationFee?.toLocaleString("es-ES")} ${
+            eventData.currency
+          } `}</p>
+        </div>
+      </div>
+      <p>Participantes</p>
       <p className={styles.data_field}>
         {eventData.registeredParticipants
           ? eventData.registeredParticipants.length
           : 0}
         /{eventData.maxParticipants}
       </p>
-      <p>cupos restantes</p>
+      <p>Cupos restantes</p>
       <p className={styles.data_field}>#</p>
     </div>
   );

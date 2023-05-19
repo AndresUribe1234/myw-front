@@ -17,6 +17,9 @@ const CreateEventForm = () => {
   const longitudeRef = useRef();
   const registrationFeeRef = useRef();
   const maxParticipantsRef = useRef();
+  const nameOrganizerRef = useRef();
+  const suscriptionTypeRef = useRef();
+  const modalityTypeRef = useRef();
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [submitingForm, setSubmitingForm] = useState(false);
@@ -32,13 +35,8 @@ const CreateEventForm = () => {
           Authorization: "Bearer " + authCtx.authObject.token,
         },
         body: JSON.stringify({
-          title: eventInformation.title,
-          description: eventInformation.description,
+          ...eventInformation,
           email: email,
-          eventType: eventInformation.eventType,
-          eventDate: eventInformation.eventDate,
-          registrationFee: eventInformation.registrationFee || undefined,
-          maxParticipants: eventInformation.maxParticipants,
         }),
       };
       setSubmitingForm(true);
@@ -71,6 +69,9 @@ const CreateEventForm = () => {
     const newEvent = {
       title: titleRef.current.value,
       description: descriptionRef.current.value,
+      nameOrganizer: nameOrganizerRef.current.value,
+      suscriptionType: suscriptionTypeRef.current.value,
+      modalityType: modalityTypeRef.current.value,
       eventType: eventTypeRef.current.value,
       eventDate: eventDateRef.current.value,
       location: {
@@ -100,7 +101,6 @@ const CreateEventForm = () => {
         minLength="3"
         maxLength="100"
       />
-
       <label htmlFor="description">descripción</label>
       <textarea
         id="description"
@@ -110,7 +110,28 @@ const CreateEventForm = () => {
         maxLength="1000"
         className={styles.beautiful_textarea}
       />
-
+      <label htmlFor="title">nombre del organizador</label>
+      <MainInput
+        type="text"
+        ref={nameOrganizerRef}
+        required
+        minLength="3"
+        maxLength="30"
+      />
+      <label htmlFor="eventType">tipo de modalidad del evento</label>
+      <select ref={modalityTypeRef} required className={styles.custom_selector}>
+        <option value="Presencial">Presencial</option>
+        <option value="Virtual">Virtual</option>
+      </select>
+      <label>tipo de suscripción</label>
+      <select
+        ref={suscriptionTypeRef}
+        required
+        className={styles.custom_selector}
+      >
+        <option value="Gratuita">Gratuita</option>
+        <option value="Pagada">Pagada</option>
+      </select>
       <label htmlFor="eventType">tipo de evento</label>
       <select
         id="eventType"

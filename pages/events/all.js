@@ -9,7 +9,7 @@ const AllEventsPage = () => {
   const router = useRouter();
   const eventsCtx = useContext(EventsContext);
   let title;
-  let eventsToShow;
+  let eventsToShow = "allEvents";
 
   if (router.query.events === "future") {
     title = "Proximos Eventos";

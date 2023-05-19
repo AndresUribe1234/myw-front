@@ -79,3 +79,69 @@
     color: #888;
   }
 }
+
+@include mobile() {
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px; // Reduced padding for mobile
+    transition: box-shadow 0.3s ease;
+    text-decoration: none;
+    width: 140px; // Full width on mobile
+    height: 300px; // Auto height on mobile
+    overflow: auto;
+    cursor: pointer;
+
+    &::-webkit-scrollbar {
+      width: 3px; // Smaller scrollbar for mobile
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #ddd;
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #bbb;
+    }
+
+    &:hover {
+      box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+      scale: 1.05;
+    }
+
+    .title {
+      font-size: 20px; // Smaller text for mobile
+      font-weight: bold;
+      color: $color-title;
+    }
+
+    .description {
+      margin-top: 5px; // Reduced margin for mobile
+      font-size: 14px; // Smaller text for mobile
+      color: $color-title;
+    }
+
+    .type,
+    .fee,
+    .participants {
+      margin-top: 5px; // Reduced margin for mobile
+      font-size: 16px; // Smaller text for mobile
+      color: #888;
+    }
+
+    .date,
+    .location {
+      margin-top: 5px; // Reduced margin for mobile
+      font-size: 14px; // Smaller text for mobile
+      color: #555;
+    }
+  }
+}

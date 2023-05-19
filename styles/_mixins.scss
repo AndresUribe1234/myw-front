@@ -9,3 +9,9 @@
     @content;
   }
 }
+
+@mixin mobile() {
+  @media (max-width: 499px) and (max-height: 910px) {
+    @content;
+  }
+}

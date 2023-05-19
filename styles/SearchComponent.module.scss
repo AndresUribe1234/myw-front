@@ -1,3 +1,6 @@
+@import "./mixins";
+@import "./vars";
+
 $searchWidth: 400px;
 $inputWidth: calc(#{$searchWidth}* 0.8);
 $iconWidth: calc(#{$searchWidth}* 0.2);
@@ -73,6 +76,87 @@ $iconWidth: calc(#{$searchWidth}* 0.2);
 
     &:hover {
       background-color: #f5f5f5;
+    }
+  }
+}
+
+$searchWidthMobile: 300px;
+$inputWidthMobile: calc(#{$searchWidthMobile}* 0.8);
+$iconWidthMobile: calc(#{$searchWidthMobile}* 0.2);
+
+@include mobile() {
+  .searchContainer {
+    position: relative;
+    width: 100%;
+    max-width: $searchWidthMobile;
+
+    .searchInputContainer {
+      display: flex;
+      align-items: center;
+
+      .searchInput {
+        width: $inputWidthMobile;
+        padding: 8px 12px; // Reduced padding for mobile
+        font-size: 14px; // Reduced font size for mobile
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+        transition: border-color 0.2s ease;
+
+        &:focus {
+          border-color: #708090;
+        }
+      }
+
+      .iconContainer {
+        padding: 0 5px; // Reduced padding for mobile
+        cursor: pointer;
+        max-width: $iconWidthMobile;
+      }
+    }
+  }
+
+  .suggestionsList {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    width: $inputWidthMobile;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 0 0 4px 4px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    max-height: 200px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #ddd;
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #bbb;
+    }
+
+    .suggestionItem {
+      padding: 6px 12px; // Reduced padding for mobile
+      cursor: pointer;
+      font-size: 14px;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
     }
   }
 }

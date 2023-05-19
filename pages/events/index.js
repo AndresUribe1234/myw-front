@@ -16,6 +16,27 @@ const EventsPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
   const eventsCtx = useContext(EventsContext);
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== "undefined" ? window.innerWidth : 0,
+    height: typeof window !== "undefined" ? window.innerHeight : 0,
+  });
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", handleResize);
+
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
+  console.log(windowSize);
 
   useEffect(() => {
     if (!eventsCtx.fetchingData) {
@@ -35,7 +56,7 @@ const EventsPage = () => {
         <div className={styles.page_container_column}>
           <CarouselEvent
             items={eventsCtx.eventsObject.futureEvents}
-            itemsPerPage={4}
+            itemsPerPage={windowSize.width < 500 ? 2 : 4}
             title={"Próximos Eventos"}
           />
           <MainBtn
@@ -45,7 +66,7 @@ const EventsPage = () => {
           </MainBtn>
           <CarouselEvent
             items={eventsCtx.eventsObject.oldEvents}
-            itemsPerPage={4}
+            itemsPerPage={windowSize.width < 500 ? 2 : 4}
             title={"Eventos Anteriores"}
           />
           <MainBtn onClick={clickHandler.bind(this, "/events/all?events=old")}>

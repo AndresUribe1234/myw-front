@@ -31,7 +31,6 @@ const AllEventsPage = () => {
           ))}
         </div>
       )}
-      <div className={styles.event_container}>{/* Your content here */}</div>
     </div>
   );
 };

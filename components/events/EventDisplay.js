@@ -59,7 +59,9 @@ const EventDisplay = (props) => {
         /{eventData.maxParticipants}
       </p>
       <p>Cupos restantes</p>
-      <p className={styles.data_field}>#</p>
+      <p className={styles.data_field}>
+        {eventData.maxParticipants - eventData.registeredParticipants?.length}
+      </p>
     </div>
   );
 };

@@ -17,6 +17,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 20px;
+  text-align: center;
 
   .all_events_container {
     padding: 10px;
@@ -46,5 +48,16 @@
         width: 80px;
       }
     }
+  }
+}
+
+@include mobile() {
+  .modal_content_container {
+    width: 250px;
+    min-height: 200px;
+  }
+
+  .event_container {
+    width: 200px;
   }
 }

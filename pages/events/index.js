@@ -36,8 +36,6 @@ const EventsPage = () => {
     }
   }, []);
 
-  console.log(windowSize);
-
   useEffect(() => {
     if (!eventsCtx.fetchingData) {
       setFetchingData(false);

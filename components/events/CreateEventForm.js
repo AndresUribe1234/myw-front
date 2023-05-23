@@ -27,7 +27,6 @@ const CreateEventForm = () => {
 
   const createEventAPICall = async function (eventInformation, email) {
     try {
-      console.log(email);
       const object = {
         method: "POST",
         headers: {

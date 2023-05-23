@@ -52,11 +52,20 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
+  text-align: center;
 
   .event_container {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
     justify-content: center;
+  }
+}
+
+@include mobile() {
+  .page_container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }

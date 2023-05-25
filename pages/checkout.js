@@ -8,6 +8,7 @@ import RegistrationCartContext from "@/store/registration-cart-context";
 import AuthContext from "@/store/auth-context";
 import Spinner from "@/components/UI/Spinner";
 import ErrorMessage from "@/components/UI/ErrorMessage";
+import EventsContext from "@/store/events-context";
 
 function CheckoutPage() {
   const [renderMP, setRenderMP] = useState(false);
@@ -15,6 +16,7 @@ function CheckoutPage() {
   const [MPData, setMPData] = useState({});
   const regisCtx = useContext(RegistrationCartContext);
   const authCtx = useContext(AuthContext);
+  const eventsCtx = useContext(EventsContext);
   const [submitingForm, setSubmitingForm] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -55,6 +57,7 @@ function CheckoutPage() {
         setSubmitingForm(false);
         setError(false);
         router.push("/my-progress");
+        eventsCtx.fetchEventsFxn();
       }
     } catch (err) {
       console.log(err);

@@ -44,11 +44,16 @@ const DesktopNavUI = () => {
           organiza tu evento
         </NavigationLink>
       </div>
-      <div>
-        <NavigationLink href={"/my-progress"}>tus momentos</NavigationLink>
-      </div>
+
       {authCtx.authObject.isLogIn ? (
-        <MenuComponent menuItems={DUMMY_ITEMS} />
+        <>
+          <div>
+            <NavigationLink href={"/my-progress"}>
+              tus inscripciones
+            </NavigationLink>
+          </div>
+          <MenuComponent menuItems={DUMMY_ITEMS} />
+        </>
       ) : (
         <div>
           <NavigationLink href={"/authentication"}>

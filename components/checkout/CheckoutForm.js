@@ -31,7 +31,6 @@ const CheckoutForm = (props) => {
       area_code: areaRef.current.value,
     };
 
-    console.log(formData);
     props.onRender(formData, registrationCtx.eventInformation?.suscriptionType);
   };
 

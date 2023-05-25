@@ -10,6 +10,7 @@ const EventsContext = createContext({
   futureEventsFnx: function () {},
   oldEventsFxn: function () {},
   eventsGroupedByDate: function () {},
+  fetchEventsFxn: function () {},
 });
 
 export function EventContextProvider(props) {
@@ -65,6 +66,15 @@ export function EventContextProvider(props) {
     }
   };
 
+  const refreshEvents = async function () {
+    try {
+      await fetchAllEvents();
+      await fetchAllGroupedEvents();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchAllEvents();
     fetchAllGroupedEvents();
@@ -96,6 +106,7 @@ export function EventContextProvider(props) {
     futureEventsFnx: futureEventsHandler,
     oldEventsFxn: oldEventsHandler,
     groupedEventsFxn: groupedEventsHandler,
+    fetchEventsFxn: refreshEvents,
   };
 
   return (

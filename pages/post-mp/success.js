@@ -5,6 +5,8 @@ import { useContext, useEffect, useState } from "react";
 import Spinner from "@/components/UI/Spinner";
 import ErrorMessage from "@/components/UI/ErrorMessage";
 import AuthContext from "@/store/auth-context";
+import styles from "../../styles/PageContainer.module.scss";
+import EventsContext from "@/store/events-context";
 
 const SuccessPage = () => {
   const [eventPreMp, setEventPreMp] = useState({});
@@ -13,9 +15,11 @@ const SuccessPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const regisCtx = useContext(RegistrationCartContext);
   const authCtx = useContext(AuthContext);
+  const eventsCtx = useContext(EventsContext);
   const router = useRouter();
+  console.log(router);
 
-  const registerToEvents = async (eventId, priceRegistration) => {
+  const registerToEvents = async (eventId, priceRegistration, mp_ref) => {
     try {
       const object = {
         method: "POST",
@@ -23,7 +27,7 @@ const SuccessPage = () => {
           "Content-Type": "application/json",
           Authorization: "Bearer " + authCtx.authObject.token,
         },
-        body: JSON.stringify({ eventId, priceRegistration }),
+        body: JSON.stringify({ eventId, priceRegistration, mp_ref }),
       };
       setSubmitingForm(true);
       setError(false);
@@ -44,6 +48,7 @@ const SuccessPage = () => {
         setSubmitingForm(false);
         setError(false);
         console.log("registration successful");
+        eventsCtx.fetchEventsFxn();
       }
     } catch (err) {
       console.log(err);
@@ -61,16 +66,20 @@ const SuccessPage = () => {
   }, []);
 
   useEffect(() => {
-    if (eventPreMp && authCtx.authObject.token) {
-      registerToEvents(eventPreMp.eventId, eventPreMp.price);
+    if (eventPreMp && authCtx.authObject.token && router.query.payment_id) {
+      registerToEvents(
+        eventPreMp.eventId,
+        eventPreMp.price,
+        router.query.payment_id
+      );
     }
-  }, [eventPreMp, authCtx]);
+  }, [eventPreMp, authCtx, router]);
 
   console.log("-----");
   console.log(eventPreMp);
 
   const navigateHandler = () => {
-    router.push("/");
+    router.push("/my-progress");
   };
 
   if (submitingForm) {
@@ -82,9 +91,14 @@ const SuccessPage = () => {
   }
 
   return (
-    <div>
-      Success page
-      <MainBtn onClick={navigateHandler}>Back</MainBtn>
+    <div className={styles.page_container_column}>
+      <h1>¡Registro Exitoso!</h1>
+      <p>
+        Tu registro para el evento ha sido exitoso. Hemos recibido el pago con
+        el número de identificación <span>{router.query.payment_id}</span>.
+      </p>
+      <p>¡Gracias por registrarte y esperamos que disfrutes del evento!</p>
+      <MainBtn onClick={navigateHandler}>Revisa tus próximos evento</MainBtn>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import styles from "../../styles/CreateEventForm.module.scss";
 import AuthContext from "@/store/auth-context";
 import { useRouter } from "next/router";
 import NavigationLink from "../UI/NavigationLink";
+import EventsContext from "@/store/events-context";
 
 const CreateEventForm = () => {
   const router = useRouter();
@@ -24,6 +25,7 @@ const CreateEventForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [submitingForm, setSubmitingForm] = useState(false);
   const authCtx = useContext(AuthContext);
+  const eventsCtx = useContext(EventsContext);
 
   const createEventAPICall = async function (eventInformation, email) {
     try {
@@ -56,6 +58,7 @@ const CreateEventForm = () => {
         router.push("/events/personal/manage");
         setSubmitingForm(false);
         setError(false);
+        eventsCtx.fetchEventsFxn();
       }
     } catch (err) {
       console.log(err);

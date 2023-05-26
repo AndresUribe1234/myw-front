@@ -1,17 +1,11 @@
-import MainBtn from "@/components/UI/MainBtn";
-import { useRouter } from "next/router";
+import ProfileForm from "@/components/user-related/ProfileForm";
+import styles from "../../styles/PageContainer.module.scss";
 
 const ProfilePage = () => {
-  const router = useRouter();
-
-  const navigateHandler = () => {
-    router.push("/");
-  };
-
   return (
-    <div>
-      Profile page
-      <MainBtn onClick={navigateHandler}>Back</MainBtn>
+    <div className={styles.page_container_column}>
+      <h1>Tu información de registro</h1>
+      <ProfileForm />
     </div>
   );
 };

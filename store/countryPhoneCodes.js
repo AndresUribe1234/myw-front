@@ -1,4 +1,4 @@
-const countryPhoneCode = [
+const countryPhoneCodes = [
   { country: "Afghanistan", code: "93", iso: "AF" },
   { country: "Albania", code: "355", iso: "AL" },
   { country: "Algeria", code: "213", iso: "DZ" },
@@ -241,4 +241,4 @@ const countryPhoneCode = [
   { country: "Zimbabwe", code: "263", iso: "ZW" },
 ];
 
-export default countryPhoneCode;
+export default countryPhoneCodes;

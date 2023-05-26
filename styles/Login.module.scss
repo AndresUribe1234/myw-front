@@ -12,6 +12,40 @@
     text-decoration: underline;
     margin-top: 20px;
   }
+
+  label {
+    display: flex;
+    flex-direction: column;
+  }
+
+  input {
+    width: 250px;
+  }
+
+  select {
+    width: 250px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #e0ca3cff;
+    border-radius: 4px;
+    margin-bottom: 20px;
+
+    &:disabled {
+      background-color: $grey-one;
+      border-color: $grey-three;
+    }
+  }
+
+  .btn_container_profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+
+  p:last-child {
+    margin: 20px 0;
+  }
 }
 
 .message {

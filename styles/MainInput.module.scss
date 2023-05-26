@@ -1,4 +1,6 @@
-// Input.module.scss
+@import "./mixins";
+@import "./vars";
+
 .inputWrapper {
   display: flex;
   flex-direction: column;
@@ -20,6 +22,11 @@
   color: #333333;
   outline: none;
   transition: border-color 0.3s, box-shadow 0.3s;
+
+  &:disabled {
+    background-color: $grey-one;
+    border-color: $grey-three;
+  }
 
   &:focus {
     border-color: #f34213ff;

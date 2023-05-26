@@ -35,7 +35,6 @@ const MyProgress = () => {
         setFetchingData(false);
         setFutureEvents(data.data.futureEvents);
         setOldEvents(data.data.oldEvents);
-        console.log(data);
       }
 
       if (response.status !== 200) {
@@ -67,13 +66,13 @@ const MyProgress = () => {
     </p>
   );
 
-  if (futureEvents) {
+  if (futureEvents.length > 0) {
     futureContent = <EventTable data={futureEvents} />;
   }
 
   let oldContent = <p>No has participado en ningún evento hasta el momento.</p>;
 
-  if (oldEvents) {
+  if (oldEvents.length > 0) {
     oldContent = <EventTable data={oldEvents} />;
   }
 
@@ -87,9 +86,9 @@ const MyProgress = () => {
 
   return (
     <div className={styles.page_container_column}>
-      <h1>Próximos Eventos</h1>
+      <h1>Tus próximos Eventos</h1>
       {futureContent}
-      <h1>Eventos Pasados</h1>
+      <h1>Tus eventos Pasados</h1>
       {oldContent}
       <h1>Tus resultados</h1>
       {resultContent}

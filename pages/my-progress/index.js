@@ -12,6 +12,7 @@ const MyProgress = () => {
   const authCtx = useContext(AuthContext);
   const [futureEvents, setFutureEvents] = useState([]);
   const [oldEvents, setOldEvents] = useState([]);
+  const [results, setResults] = useState(false);
 
   async function getUserEvents() {
     try {
@@ -70,12 +71,6 @@ const MyProgress = () => {
     futureContent = <EventTable data={futureEvents} />;
   }
 
-  let oldContent = <p>No has participado en ningún evento hasta el momento.</p>;
-
-  if (oldEvents.length > 0) {
-    oldContent = <EventTable data={oldEvents} />;
-  }
-
   if (fetchingData) {
     return <Spinner />;
   }
@@ -86,12 +81,30 @@ const MyProgress = () => {
 
   return (
     <div className={styles.page_container_column}>
-      <h1>Tus próximos Eventos</h1>
-      {futureContent}
-      <h1>Tus eventos Pasados</h1>
-      {oldContent}
-      <h1>Tus resultados</h1>
-      {resultContent}
+      {!results && futureEvents.length < 1 && oldEvents.length < 1 && (
+        <p className={styles.warning_message}>
+          No has participado en ningún evento hasta el momento. Por lo tanto, no
+          tienes eventos futuros, eventos pasados ni resultados de eventos
+          registrados.
+        </p>
+      )}
+      {futureEvents.length > 0 && (
+        <>
+          <h1>Tus próximos Eventos</h1>
+          <EventTable data={futureEvents} />
+        </>
+      )}
+      {oldEvents.length > 0 && (
+        <>
+          <h1>Tus eventos Pasados</h1>
+          <EventTable data={oldEvents} />
+        </>
+      )}
+      {results && (
+        <>
+          <h1>Tus resultados</h1>
+        </>
+      )}
     </div>
   );
 };

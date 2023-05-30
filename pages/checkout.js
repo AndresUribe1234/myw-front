@@ -54,9 +54,9 @@ function CheckoutPage() {
       }
 
       if (response.status === 200) {
+        router.push("/my-progress");
         setSubmitingForm(false);
         setError(false);
-        router.push("/my-progress");
         eventsCtx.fetchEventsFxn();
       }
     } catch (err) {

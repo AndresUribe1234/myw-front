@@ -17,7 +17,6 @@ const SuccessPage = () => {
   const authCtx = useContext(AuthContext);
   const eventsCtx = useContext(EventsContext);
   const router = useRouter();
-  console.log(router);
 
   const registerToEvents = async (eventId, priceRegistration, mp_ref) => {
     try {
@@ -45,9 +44,9 @@ const SuccessPage = () => {
       }
 
       if (response.status === 200) {
+        router.push("/my-progress");
         setSubmitingForm(false);
         setError(false);
-        console.log("registration successful");
         eventsCtx.fetchEventsFxn();
       }
     } catch (err) {
@@ -74,9 +73,6 @@ const SuccessPage = () => {
       );
     }
   }, [eventPreMp, authCtx, router]);
-
-  console.log("-----");
-  console.log(eventPreMp);
 
   const navigateHandler = () => {
     router.push("/my-progress");

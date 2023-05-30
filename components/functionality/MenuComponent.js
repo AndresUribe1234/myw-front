@@ -2,11 +2,13 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import styles from "../../styles/MenuComponent.module.scss";
 import Link from "next/link";
 import AuthContext from "@/store/auth-context";
+import { useRouter } from "next/router";
 
 const MenuComponent = ({ menuItems }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const authCtx = useContext(AuthContext);
+  const router = useRouter();
 
   const handleToggleMenu = () => {
     setIsOpen(!isOpen);
@@ -31,6 +33,7 @@ const MenuComponent = ({ menuItems }) => {
     authCtx.emailFxn("");
     authCtx.nameFnx("");
     localStorage.removeItem("authObject");
+    router.push("/authentication");
   };
 
   return (

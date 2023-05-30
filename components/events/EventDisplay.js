@@ -60,7 +60,9 @@ const EventDisplay = (props) => {
       </p>
       <p>Cupos restantes</p>
       <p className={styles.data_field}>
-        {eventData.maxParticipants - eventData.registeredParticipants?.length}
+        {(
+          eventData.maxParticipants - eventData.registeredParticipants?.length
+        ).toString()}
       </p>
     </div>
   );

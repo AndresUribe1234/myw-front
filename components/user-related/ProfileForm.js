@@ -1,14 +1,15 @@
-import { useRef, useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import styles from "../../styles/Login.module.scss";
 import MainBtn from "../UI/MainBtn";
 import countryPhoneCodes from "@/store/countryPhoneCodes";
 import MainInput from "../UI/MainInput";
 import ErrorMessage from "../UI/ErrorMessage";
 import AuthContext from "@/store/auth-context";
-import { frameData } from "framer-motion";
+import { useRouter } from "next/router";
 
 const ProfileForm = (props) => {
   const authCtx = useContext(AuthContext);
+  const router = useRouter();
 
   const [isEditable, setIsEditable] = useState(false);
   const [error, setError] = useState(false);
@@ -67,6 +68,9 @@ const ProfileForm = (props) => {
         console.log(data);
         authCtx.refreshUserFnx();
         setIsEditable(false);
+        if (router.query.from) {
+          router.push("/checkout");
+        }
       }
     } catch (err) {
       console.log(err);
@@ -93,6 +97,8 @@ const ProfileForm = (props) => {
   if (error) {
     return <ErrorMessage error={errorMessage} />;
   }
+
+  console.log(router);
 
   return (
     <form onSubmit={handleSubmit} className={styles.auth_login_container}>

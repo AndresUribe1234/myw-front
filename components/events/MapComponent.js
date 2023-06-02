@@ -1,29 +1,31 @@
 // MapComponent.jsx
-import React, { useState, useCallback } from "react";
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import React, { useState, useEffect, useCallback } from "react";
+import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 
 const libraries = ["places"];
 
-function MapComponent(props) {
+function MapComponent({ lat: initialLat, lng: initialLng, onGetAddress }) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
     libraries,
   });
 
-  const [marker, setMarker] = useState(null);
-  const [center, setCenter] = useState(defaultCenter);
-  const [zoom, setZoom] = useState(8); // initial zoom level
-
-  const defaultCenter = {
-    lat: 6.22298782383287,
-    lng: -75.57393446011048,
-  };
+  const [marker, setMarker] = useState({ lat: initialLat, lng: initialLng });
+  const [center, setCenter] = useState(
+    initialLat
+      ? { lat: initialLat, lng: initialLng }
+      : { lat: 6.22298782383287, lng: -75.57393446011048 }
+  );
+  const [zoom, setZoom] = useState(initialLat ? 14 : 8); // initial zoom level
 
   const onMapClick = useCallback(async (event) => {
-    setMarker({
+    const newMarker = {
       lat: event.latLng.lat(),
       lng: event.latLng.lng(),
-    });
+    };
+
+    setMarker(newMarker);
+    setCenter(newMarker);
 
     try {
       const response = await fetch(
@@ -36,15 +38,15 @@ function MapComponent(props) {
 
       const data = await response.json();
 
-      if (props.onGetAddress) {
-        props.onGetAddress({
+      if (onGetAddress) {
+        onGetAddress({
           address: data.display_name,
           city: data.address.city,
           state: data.address.state,
           country: data.address.country,
           zipcode: data.address.postcode,
-          lat: event.latLng.lat(),
-          lng: event.latLng.lng(),
+          lat: newMarker.lat,
+          lng: newMarker.lng,
         });
       }
     } catch (error) {
@@ -52,18 +54,22 @@ function MapComponent(props) {
     }
   }, []);
 
+  console.log("marker", marker);
+
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setCenter({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
-        setZoom(14); // zoom in when geolocation is available
-      },
-      () => null
-    );
-  }, []);
+    if (!initialLat && !initialLng) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCenter({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+          setZoom(14);
+        },
+        () => null
+      );
+    }
+  }, [initialLat, initialLng]);
 
   if (loadError) return "Error loading maps";
   if (!isLoaded) return "Loading Maps";
@@ -78,7 +84,7 @@ function MapComponent(props) {
       center={center}
       onClick={onMapClick}
     >
-      {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
+      {marker && <MarkerF position={{ lat: marker.lat, lng: marker.lng }} />}
     </GoogleMap>
   );
 }

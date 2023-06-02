@@ -46,7 +46,7 @@ const EditEventForm = ({ data }) => {
       setEventDate(eventDate.toISOString().split("T")[0]);
     }
 
-    setLongitude(data.location?.coordinates[0]);
+    setLongitude(data.address?.coordinates[0]);
     setLatitude(data.location?.coordinates[1]);
     setAddress(data.address);
     setRegistrationFee(data.registrationFee);
@@ -58,6 +58,27 @@ const EditEventForm = ({ data }) => {
   }, [data]);
 
   console.log(eventDate);
+
+  const cancelEditHandler = () => {
+    setTitle(data.title);
+    setDescription(data.description);
+    setOrganizerName(data.nameOrganizer);
+
+    let eventDate;
+    if (data.eventDate) {
+      eventDate = new Date(data.eventDate);
+      setEventDate(eventDate.toISOString().split("T")[0]);
+    }
+    setLongitude(data.address?.coordinates[0]);
+    setLatitude(data.location?.coordinates[1]);
+    setAddress(data.address);
+    setRegistrationFee(data.registrationFee);
+    setCurrency(data.currency);
+    setMaxParticipants(data.maxParticipants);
+    setSubscriptionType(data.suscriptionType);
+    setModalityType(data.modalityType);
+    setEventType(data.eventType);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -88,6 +109,14 @@ const EditEventForm = ({ data }) => {
     return <ErrorMessage error={errorMessage} />;
   }
 
+  const addressHandler = (dataObject) => {
+    setLongitude(dataObject.lng);
+    setLatitude(dataObject.lat);
+    setAddress(dataObject);
+
+    console.log(dataObject);
+  };
+
   console.log(data);
 
   return (
@@ -109,7 +138,7 @@ const EditEventForm = ({ data }) => {
           type="text"
           disabled={!isEditable}
           required
-          value={description}
+          value={isEditable ? description : data.description}
           onChange={(e) => setDescription(e.target.value)}
           className={styles.beautiful_textarea}
         />
@@ -120,7 +149,7 @@ const EditEventForm = ({ data }) => {
           type="text"
           disabled={!isEditable}
           required
-          value={organizerName}
+          value={isEditable ? organizerName : data.nameOrganizer}
           onChange={(e) => setOrganizerName(e.target.value)}
         />
       </label>
@@ -130,7 +159,7 @@ const EditEventForm = ({ data }) => {
           defaultValue={""}
           disabled={!isEditable}
           required
-          value={modalityType}
+          value={isEditable ? modalityType : data.modalityType}
           onChange={(e) => setModalityType(e.target.value)}
         >
           <option value="Presencial">Presencial</option>
@@ -140,15 +169,19 @@ const EditEventForm = ({ data }) => {
       {modalityType === "Presencial" && (
         <div className={styles.address_container}>
           <p>
-            Por favor, haz clic en el mapa para seleccionar la ubicación de tu
+            Por favor, haz clic en el mapa para cambiar la ubicación de tu
             evento
           </p>
-          <MapWithNoSSR />
+          <MapWithNoSSR
+            lat={address?.lat}
+            lng={address?.lng}
+            onGetAddress={addressHandler}
+          />
           <label htmlFor="address">Ubicación del evento</label>
           <p>
-            {address.address.length < 1
+            {!address
               ? "No se ha seleccionado ninguna ubicación"
-              : address}
+              : address?.address}
           </p>
         </div>
       )}
@@ -158,7 +191,7 @@ const EditEventForm = ({ data }) => {
           defaultValue={""}
           disabled={!isEditable}
           required
-          value={subscriptionType}
+          value={isEditable ? subscriptionType : data.suscriptionType}
           onChange={(e) => setSubscriptionType(e.target.value)}
         >
           <option value="Gratuita">Gratuita</option>
@@ -173,7 +206,7 @@ const EditEventForm = ({ data }) => {
               type="number"
               disabled={!isEditable}
               required
-              value={registrationFee}
+              value={isEditable ? registrationFee : data.registrationFee}
               onChange={(e) => setRegistrationFee(e.target.value)}
             />
           </label>
@@ -181,7 +214,7 @@ const EditEventForm = ({ data }) => {
             Moneda
             <MainInput
               type="text"
-              disabled={!isEditable}
+              disabled={true}
               required
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
@@ -195,7 +228,7 @@ const EditEventForm = ({ data }) => {
           defaultValue={""}
           disabled={!isEditable}
           required
-          value={eventType}
+          value={isEditable ? eventType : data.eventType}
           onChange={(e) => setEventType(e.target.value)}
         >
           <option value="Carrera">Carrera</option>
@@ -222,38 +255,8 @@ const EditEventForm = ({ data }) => {
           type="number"
           disabled={!isEditable}
           required
-          value={maxParticipants}
+          value={isEditable ? maxParticipants : data.maxParticipants}
           onChange={(e) => setMaxParticipants(e.target.value)}
-        />
-      </label>
-      <label>
-        Longitud
-        <MainInput
-          type="number"
-          disabled={!isEditable}
-          required
-          value={longitude}
-          onChange={(e) => setLongitude(e.target.value)}
-        />
-      </label>
-      <label>
-        Latitud
-        <MainInput
-          type="number"
-          disabled={!isEditable}
-          required
-          value={latitude}
-          onChange={(e) => setLatitude(e.target.value)}
-        />
-      </label>
-      <label>
-        Dirección
-        <MainInput
-          type="text"
-          disabled={!isEditable}
-          required
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
         />
       </label>
 
@@ -263,7 +266,13 @@ const EditEventForm = ({ data }) => {
             Enviar
           </MainBtn>
         )}
-        <MainBtn type="button" onClick={() => setIsEditable(!isEditable)}>
+        <MainBtn
+          type="button"
+          onClick={() => {
+            setIsEditable(!isEditable);
+            cancelEditHandler();
+          }}
+        >
           {isEditable ? "Cancelar" : "Editar"}
         </MainBtn>
       </div>

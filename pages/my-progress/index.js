@@ -26,7 +26,7 @@ const MyProgress = () => {
       setFetchingData(true);
       setError(false);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_NODE_URL}/api/events/user`,
+        `${process.env.NEXT_PUBLIC_NODE_URL}/api/events/registration`,
         object
       );
 

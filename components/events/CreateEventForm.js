@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import MainInput from "../UI/MainInput";
 import MainBtn from "../UI/MainBtn";
 import styles from "../../styles/CreateEventForm.module.scss";
@@ -6,21 +6,28 @@ import AuthContext from "@/store/auth-context";
 import { useRouter } from "next/router";
 import NavigationLink from "../UI/NavigationLink";
 import EventsContext from "@/store/events-context";
+import dynamic from "next/dynamic";
+
+// Import the dynamic map component
+const MapWithNoSSR = dynamic(() => import("./MapComponent"), {
+  ssr: false,
+});
 
 const CreateEventForm = () => {
   const router = useRouter();
-  const titleRef = useRef();
-  const descriptionRef = useRef();
-  const eventTypeRef = useRef();
-  const eventDateRef = useRef();
-  const addressRef = useRef();
-  const latitudeRef = useRef();
-  const longitudeRef = useRef();
-  const registrationFeeRef = useRef();
-  const maxParticipantsRef = useRef();
-  const nameOrganizerRef = useRef();
-  const suscriptionTypeRef = useRef();
-  const modalityTypeRef = useRef();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [nameOrganizer, setNameOrganizer] = useState("");
+  const [modalityType, setModalityType] = useState("Virtual");
+  const [address, setAddress] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [suscriptionType, setSuscriptionType] = useState("Gratuita");
+  const [registrationFee, setRegistrationFee] = useState("");
+  const [eventType, setEventType] = useState("Carrera");
+  const [eventDate, setEventDate] = useState("");
+  const [maxParticipants, setMaxParticipants] = useState("");
+  const [addressMongo, setAddressMongo] = useState({});
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [submitingForm, setSubmitingForm] = useState(false);
@@ -42,7 +49,7 @@ const CreateEventForm = () => {
       };
       setSubmitingForm(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_NODE_URL}/api/events/`,
+        `${process.env.NEXT_PUBLIC_NODE_URL}/api/events/user`,
         object
       );
 
@@ -69,75 +76,117 @@ const CreateEventForm = () => {
     e.preventDefault();
 
     const newEvent = {
-      title: titleRef.current.value,
-      description: descriptionRef.current.value,
-      nameOrganizer: nameOrganizerRef.current.value,
-      suscriptionType: suscriptionTypeRef.current.value,
-      modalityType: modalityTypeRef.current.value,
-      eventType: eventTypeRef.current.value,
-      eventDate: eventDateRef.current.value,
+      title,
+      description,
+      nameOrganizer,
+      suscriptionType,
+      modalityType,
+      eventType,
+      eventDate,
       location: {
         type: "Point",
-        coordinates: [
-          parseFloat(latitudeRef.current.value),
-          parseFloat(longitudeRef.current.value),
-        ],
+        coordinates: [parseFloat(latitude), parseFloat(longitude)],
       },
-      registrationFee: parseFloat(registrationFeeRef.current.value) || 0,
-      maxParticipants: parseInt(maxParticipantsRef.current.value),
+      registrationFee: parseFloat(registrationFee) || 0,
+      maxParticipants: parseInt(maxParticipants),
+      addressMongo,
     };
 
-    // Submit the new event data to your API
     await createEventAPICall(newEvent, authCtx.authObject.email);
+  };
+
+  const addressHandler = (dataObject) => {
+    setAddress(dataObject.address);
+    setLongitude(dataObject.lng);
+    setLatitude(dataObject.lat);
+    setAddressMongo(dataObject);
   };
 
   return (
     <form onSubmit={handleSubmit} className={styles.event_form}>
       <h1>crea tu evento</h1>
-      <label htmlFor="title">título</label>
+      <label htmlFor="title">Título</label>
       <MainInput
         type="text"
         id="title"
-        ref={titleRef}
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
         required
         minLength="3"
         maxLength="100"
       />
-      <label htmlFor="description">descripción</label>
+      <label htmlFor="description">Descripción</label>
       <textarea
         id="description"
-        ref={descriptionRef}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         required
         minLength="10"
         maxLength="1000"
         className={styles.beautiful_textarea}
       />
-      <label htmlFor="title">nombre del organizador</label>
+      <label htmlFor="title">Nombre del organizador</label>
       <MainInput
         type="text"
-        ref={nameOrganizerRef}
+        value={nameOrganizer}
+        onChange={(e) => setNameOrganizer(e.target.value)}
         required
         minLength="3"
         maxLength="30"
       />
-      <label htmlFor="eventType">tipo de modalidad del evento</label>
-      <select ref={modalityTypeRef} required className={styles.custom_selector}>
+      <label htmlFor="eventType">Tipo de modalidad del evento</label>
+      <select
+        value={modalityType}
+        onChange={(e) => setModalityType(e.target.value)}
+        required
+        className={styles.custom_selector}
+      >
         <option value="Presencial">Presencial</option>
         <option value="Virtual">Virtual</option>
       </select>
-      <label>tipo de suscripción</label>
+      {modalityType === "Presencial" && (
+        <div className={styles.address_container}>
+          <p>
+            Por favor, haz clic en el mapa para seleccionar la ubicación de tu
+            evento
+          </p>
+          <MapWithNoSSR onGetAddress={addressHandler} />
+          <label htmlFor="address">Ubicación del evento</label>
+          <p>
+            {address.length < 1
+              ? "No se ha seleccionado ninguna ubicación"
+              : address}
+          </p>
+        </div>
+      )}
+
+      <label>Tipo de suscripción</label>
       <select
-        ref={suscriptionTypeRef}
+        value={suscriptionType}
+        onChange={(e) => setSuscriptionType(e.target.value)}
         required
         className={styles.custom_selector}
       >
         <option value="Gratuita">Gratuita</option>
         <option value="Pagada">Pagada</option>
       </select>
-      <label htmlFor="eventType">tipo de evento</label>
+      {suscriptionType === "Pagada" && (
+        <>
+          <label htmlFor="registrationFee">Tarifa de inscripción</label>
+          <MainInput
+            type="number"
+            id="registrationFee"
+            value={registrationFee}
+            onChange={(e) => setRegistrationFee(e.target.value)}
+            min="0"
+          />
+        </>
+      )}
+      <label htmlFor="eventType">Tipo de evento</label>
       <select
         id="eventType"
-        ref={eventTypeRef}
+        value={eventType}
+        onChange={(e) => setEventType(e.target.value)}
         required
         className={styles.custom_selector}
       >
@@ -148,38 +197,21 @@ const CreateEventForm = () => {
         <option value="Otro">Otro</option>
       </select>
 
-      <label htmlFor="eventDate">fecha del evento</label>
+      <label htmlFor="eventDate">Fecha del evento</label>
       <MainInput
         type="datetime-local"
         id="eventDate"
-        ref={eventDateRef}
+        value={eventDate}
+        onChange={(e) => setEventDate(e.target.value)}
         required
       />
 
-      <div>
-        <label htmlFor="address">dirección (opcional)</label>
-        <MainInput type="text" id="address" ref={addressRef} />
-
-        <label htmlFor="latitude">latitud dirección (opcional)</label>
-        <MainInput type="number" id="latitude" ref={latitudeRef} />
-
-        <label htmlFor="longitude">longitud dirección (opcional)</label>
-        <MainInput type="number" id="longitude" ref={longitudeRef} />
-      </div>
-
-      <label htmlFor="registrationFee">tarifa de inscripción (opcional)</label>
-      <MainInput
-        type="number"
-        id="registrationFee"
-        ref={registrationFeeRef}
-        min="0"
-      />
-
-      <label htmlFor="maxParticipants">número máximo de participantes</label>
+      <label htmlFor="maxParticipants">Número máximo de participantes</label>
       <MainInput
         type="number"
         id="maxParticipants"
-        ref={maxParticipantsRef}
+        value={maxParticipants}
+        onChange={(e) => setMaxParticipants(e.target.value)}
         required
         min="1"
       />

@@ -46,6 +46,46 @@
   p:last-child {
     margin: 20px 0;
   }
+
+  .beautiful_textarea {
+    min-width: 250px;
+    min-height: 100px;
+    padding: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+    border: 1px solid $btn-color;
+    border-radius: 5px;
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) inset;
+
+    &:focus {
+      border-color: $color-navbar;
+      box-shadow: 0 0 10px rgba(0, 150, 136, 0.1);
+    }
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #ddd;
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #bbb;
+    }
+
+    &:disabled {
+      background-color: $grey-one;
+      border-color: $grey-three;
+    }
+  }
 }
 
 .message {
@@ -118,5 +158,23 @@
     background-color: transparent;
     border-color: transparent;
     font-size: 16px;
+  }
+}
+
+.address_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  p {
+    width: 300px;
+  }
+  p:first-child {
+    margin-top: 20px;
+  }
+  label {
+    margin: 0;
   }
 }

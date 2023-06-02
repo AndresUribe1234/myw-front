@@ -7,6 +7,11 @@
   height: 50px;
   border-bottom: 2px solid $grey-two;
 
+  .activeColor {
+    background-color: $grey-one;
+    transition: background-color 0.2s ease-in;
+  }
+
   div {
     display: flex;
     flex: 1;

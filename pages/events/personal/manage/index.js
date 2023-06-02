@@ -61,7 +61,13 @@ const EventsPersonalManagePage = () => {
       {!fetchingData &&
         !error &&
         eventsArray &&
-        eventsArray.map((ele, index) => <EventCard event={ele} key={index} />)}
+        eventsArray.map((ele, index) => (
+          <EventCard
+            event={ele}
+            key={index}
+            goTo={`/events/personal/manage/${ele._id}`}
+          />
+        ))}
 
       {error && <ErrorMessage error={errorMessage} />}
       {eventsArray.length < 1 && (
